@@ -9,12 +9,12 @@ import {
 export default function Index() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Hello World</Text>
+      <Text style={styles.title}>Hello</Text>
 
       <TextInput placeholder="Type here..." style={styles.input} />
 
       {/* Tombol standar bawaan React Native */}
-      <Button title="halah nyocot" />
+      <Button title="Click Me" />
     </View>
   );
 }
