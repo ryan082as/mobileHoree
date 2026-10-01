@@ -14,7 +14,7 @@ export default function Index() {
       <TextInput placeholder="Type here..." style={styles.input} />
 
       {/* Tombol standar bawaan React Native */}
-      <Button title="Kocok Me" />
+      <Button title="halah nyocot" />
     </View>
   );
 }
