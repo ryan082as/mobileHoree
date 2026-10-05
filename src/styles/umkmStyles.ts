@@ -213,20 +213,6 @@ export const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#2563eb",
   },
-  lokasiText: {
-    fontSize: 13,
-    color: "#64748b",
-    marginBottom: 8,
-  },
-  penilaianRow: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  penilaianText: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#0f172a",
-  },
   ownerRow: {
     flexDirection: "row",
     alignItems: "center",

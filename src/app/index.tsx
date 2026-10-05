@@ -9,6 +9,7 @@ import {
   View,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 
 // 1. IMPORT DATA & TYPES (Kriteria: Type & Array of Objects)
 import {
@@ -33,6 +34,8 @@ const KATEGORI_KULINER_LIST: KategoriKuliner[] = [
 ];
 
 export default function Index() {
+  const router = useRouter();
+
   // State untuk pencarian dan filter kategori kuliner
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<KategoriKuliner>("Semua");
@@ -166,16 +169,8 @@ export default function Index() {
     const status = getStatusBadge(item.skorTotal);
 
     return (
-      <Pressable
-        style={styles.card}
-        onPress={() =>
-          handleComingSoon(
-            `Detail ${item.namaUsaha}`,
-            "Modul 2 (Dynamic Route /umkm/[id])"
-          )
-        }
-      >
-        {/* 1. Gambar UMKM */}
+      <View style={styles.card}>
+        {/* Gambar Foto Makanan / Outlet Kuliner */}
         <Image
           source={{ uri: item.fotoUrl }}
           style={styles.cardImage}
@@ -183,38 +178,133 @@ export default function Index() {
         />
 
         <View style={styles.cardBody}>
-          {/* 2. Baris: Nama UMKM (kiri) & Kategori (kanan) */}
+          {/* Header Kartu: Nama Usaha Kuliner & Sektor */}
           <View style={styles.cardHeaderRow}>
             <Text style={styles.businessName} numberOfLines={1}>
               {item.namaUsaha}
             </Text>
             <View style={styles.categoryBadge}>
-              <Text style={styles.categoryBadgeText}>kategori: {item.kategori}</Text>
+              <Text style={styles.categoryBadgeText}>{item.kategori}</Text>
             </View>
           </View>
 
-          {/* 3. Baris: Lokasi */}
-          <Text style={styles.lokasiText}>
-            lokasi : {item.lokasiKota}
-          </Text>
+          {/* Pemilik & Kota */}
+          <View style={styles.ownerRow}>
+            <Ionicons name="restaurant-outline" size={14} color="#64748b" />
+            <Text style={styles.ownerText}>
+              {item.namaPemilik} • {item.lokasiKota}
+            </Text>
+          </View>
 
-          {/* 4. Baris: Penilaian ⭐ */}
-          <View style={styles.penilaianRow}>
-            <Text style={styles.penilaianText}>penilaian ⭐</Text>
-            {/* Inline Style: Warna badge dinamis sesuai skor kelayakan (Modul 1) */}
-            <View
-              style={[
-                styles.scoreBadgeContainer,
-                { backgroundColor: status.bgBadge, marginLeft: 8 },
-              ]}
-            >
-              <Text style={[styles.scoreBadgeText, { color: status.textBadge }]}>
-                {item.skorTotal}/100 ({status.label})
+          {/* Bar Penilaian & Skor (Kriteria: Inline Styles untuk warna dinamis) */}
+          <View style={styles.scoreRow}>
+            <View style={styles.scoreHeader}>
+              <Text style={styles.scoreLabel}>
+                Skor Kelayakan Kuliner:{" "}
+                <Text style={{ fontWeight: "bold" }}>{item.skorTotal}/100</Text>
               </Text>
+              {/* Inline Style: Warna badge dinamis */}
+              <View
+                style={[
+                  styles.scoreBadgeContainer,
+                  { backgroundColor: status.bgBadge },
+                ]}
+              >
+                <Text style={[styles.scoreBadgeText, { color: status.textBadge }]}>
+                  {status.label}
+                </Text>
+              </View>
             </View>
+
+            {/* Inline Style: Lebar dan warna progress bar */}
+            <View style={styles.progressBarTrack}>
+              <View
+                style={[
+                  styles.progressBarFill,
+                  {
+                    width: `${item.skorTotal}%`,
+                    backgroundColor: status.barColor,
+                  },
+                ]}
+              />
+            </View>
+          </View>
+
+          {/* Metrik Finansial & Operasional Kuliner */}
+          <View style={styles.metricsGrid}>
+            <View style={styles.metricItem}>
+              <Text style={styles.metricLabel}>Omzet / Bln</Text>
+              <Text style={styles.metricValue}>{formatRupiah(item.omzetBulanan)}</Text>
+            </View>
+            <View style={styles.metricItem}>
+              <Text style={styles.metricLabel}>Laba Bersih</Text>
+              <Text style={styles.metricValue}>{formatRupiah(item.labaBersih)}</Text>
+            </View>
+            <View style={styles.metricItem}>
+              <Text style={styles.metricLabel}>Kapasitas Dapur</Text>
+              <Text style={styles.metricValue}>{item.kapasitasPorsiHarian} Porsi/Hari</Text>
+            </View>
+          </View>
+
+          {/* Kepatuhan Khusus Kuliner (Halal, P-IRT, Online Food, QRIS) */}
+          <View style={styles.complianceRow}>
+            <View style={styles.complianceBadge}>
+              <Ionicons
+                name={item.sertifikatHalal ? "checkmark-circle" : "close-circle"}
+                size={14}
+                color={item.sertifikatHalal ? "#10b981" : "#94a3b8"}
+              />
+              <Text style={styles.complianceText}>Halal BPJPH</Text>
+            </View>
+
+            <View style={styles.complianceBadge}>
+              <Ionicons
+                name={item.izinPIRT_BPOM ? "checkmark-circle" : "close-circle"}
+                size={14}
+                color={item.izinPIRT_BPOM ? "#10b981" : "#94a3b8"}
+              />
+              <Text style={styles.complianceText}>Izin P-IRT/BPOM</Text>
+            </View>
+
+            <View style={styles.complianceBadge}>
+              <Ionicons
+                name={item.terdaftarOnlineFood ? "checkmark-circle" : "close-circle"}
+                size={14}
+                color={item.terdaftarOnlineFood ? "#10b981" : "#94a3b8"}
+              />
+              <Text style={styles.complianceText}>Online Food</Text>
+            </View>
+
+            <View style={styles.complianceBadge}>
+              <Ionicons
+                name={item.adopsiQRIS ? "checkmark-circle" : "close-circle"}
+                size={14}
+                color={item.adopsiQRIS ? "#10b981" : "#94a3b8"}
+              />
+              <Text style={styles.complianceText}>QRIS Kasir</Text>
+            </View>
+          </View>
+
+          {/* Rekomendasi Utama Asesor Kuliner */}
+          <View style={styles.recommendationBox}>
+            <Text style={styles.recommendationText}>
+              🍽️ <Text style={{ fontWeight: "bold" }}>Rapor Higiene & Bisnis:</Text>{" "}
+              {item.rekomendasiAsesor}
+            </Text>
+          </View>
+
+          {/* Tombol Aksi Detail Evaluasi */}
+          <View style={styles.cardActionRow}>
+            <Pressable
+              style={styles.actionButton}
+              onPress={() => router.push(`/umkm/${item.id}` as any)}
+            >
+              <Text style={styles.actionButtonText}>Lihat Audit Lengkap</Text>
+              <Ionicons name="arrow-forward" size={14} color="#ffffff" />
+            </Pressable>
           </View>
         </View>
-      </Pressable>
+      </View>
     );
   };
 
@@ -222,7 +312,60 @@ export default function Index() {
   // HEADER BAGIAN ATAS LAYAR
   // =========================================================================
   const renderHeader = () => (
-    <View style={{ paddingTop: 16 }}>
+    <View>
+      {/* 1. Header App Bar */}
+      <View style={styles.headerContainer}>
+        <View style={styles.headerTopRow}>
+          <View style={styles.headerBadge}>
+            <Text style={styles.headerBadgeText}>KulinerCheck UMKM v1.0</Text>
+          </View>
+
+          {/* Tombol Cepat Auth & Admin */}
+          <View style={styles.authButtonsRow}>
+            <Pressable
+              style={styles.authBtn}
+              onPress={() => router.push("/(auth)/login" as any)}
+            >
+              <Ionicons name="person-circle-outline" size={16} color="#ffffff" />
+              <Text style={styles.authBtnText}>Masuk</Text>
+            </Pressable>
+
+            <Pressable
+              style={styles.authBtn}
+              onPress={() => router.push("/(admin)/kelola" as any)}
+            >
+              <Ionicons name="shield-checkmark-outline" size={16} color="#ffffff" />
+              <Text style={styles.authBtnText}>Asesor</Text>
+            </Pressable>
+          </View>
+        </View>
+
+        <Text style={styles.headerTitle}>Penilaian Bisnis Kuliner UMKM</Text>
+        <Text style={styles.headerSubtitle}>
+          Sistem Evaluasi Higiene, Kelayakan Finansial & Legalitas Usaha Makanan Minuman
+        </Text>
+      </View>
+
+      {/* 2. Ringkasan Metrik (KPI Cards) */}
+      <View style={styles.statsContainer}>
+        <View style={styles.statCard}>
+          <Ionicons name="fast-food-outline" size={20} color="#2563eb" />
+          <Text style={styles.statValue}>{stats.totalUMKM}</Text>
+          <Text style={styles.statLabel}>Gerai Terdata</Text>
+        </View>
+
+        <View style={styles.statCard}>
+          <Ionicons name="stats-chart-outline" size={20} color="#10b981" />
+          <Text style={styles.statValue}>{stats.rataRataSkor}/100</Text>
+          <Text style={styles.statLabel}>Rata-rata Skor</Text>
+        </View>
+
+        <View style={styles.statCard}>
+          <Ionicons name="shield-checkmark" size={20} color="#f59e0b" />
+          <Text style={styles.statValue}>{stats.jumlahLayak}</Text>
+          <Text style={styles.statLabel}>Siap Modal & KUR</Text>
+        </View>
+      </View>
 
       {/* 3. Search Bar (Komponen TextInput Modul 1) */}
       <View style={styles.searchWrapper}>
@@ -321,6 +464,63 @@ export default function Index() {
             <Text style={styles.simResultText}>{simHasil}</Text>
           </View>
         )}
+      </View>
+
+      {/* Navigasi Cepat Halaman Lain */}
+      <View style={{ flexDirection: "row", gap: 8, marginBottom: 16 }}>
+        <Pressable
+          style={{
+            flex: 1,
+            backgroundColor: "#ffffff",
+            padding: 12,
+            borderRadius: 10,
+            alignItems: "center",
+            borderWidth: 1,
+            borderColor: "#e2e8f0",
+          }}
+          onPress={() => router.push("/evaluasi" as any)}
+        >
+          <Ionicons name="create-outline" size={20} color="#059669" />
+          <Text style={{ fontSize: 11, fontWeight: "600", color: "#334155", marginTop: 4 }}>
+            Audit Baru
+          </Text>
+        </Pressable>
+
+        <Pressable
+          style={{
+            flex: 1,
+            backgroundColor: "#ffffff",
+            padding: 12,
+            borderRadius: 10,
+            alignItems: "center",
+            borderWidth: 1,
+            borderColor: "#e2e8f0",
+          }}
+          onPress={() => router.push("/docs/halal" as any)}
+        >
+          <Ionicons name="book-outline" size={20} color="#2563eb" />
+          <Text style={{ fontSize: 11, fontWeight: "600", color: "#334155", marginTop: 4 }}>
+            Panduan SOP
+          </Text>
+        </Pressable>
+
+        <Pressable
+          style={{
+            flex: 1,
+            backgroundColor: "#ffffff",
+            padding: 12,
+            borderRadius: 10,
+            alignItems: "center",
+            borderWidth: 1,
+            borderColor: "#e2e8f0",
+          }}
+          onPress={() => router.push("/about" as any)}
+        >
+          <Ionicons name="people-outline" size={20} color="#7c3aed" />
+          <Text style={{ fontSize: 11, fontWeight: "600", color: "#334155", marginTop: 4 }}>
+            Profil Tim
+          </Text>
+        </Pressable>
       </View>
 
       {/* Informasi Kelompok Pengembang (Sesuai Syarat Modul) */}
