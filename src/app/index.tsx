@@ -378,28 +378,7 @@ export default function Index() {
         </Text>
       </View>
 
-      {/* 2. Ringkasan Metrik (KPI Cards) */}
-      <View style={styles.statsContainer}>
-        <View style={styles.statCard}>
-          <Ionicons name="fast-food-outline" size={20} color="#2563eb" />
-          <Text style={styles.statValue}>{stats.totalUMKM}</Text>
-          <Text style={styles.statLabel}>Gerai Terdata</Text>
-        </View>
-
-        <View style={styles.statCard}>
-          <Ionicons name="stats-chart-outline" size={20} color="#10b981" />
-          <Text style={styles.statValue}>{stats.rataRataSkor}/100</Text>
-          <Text style={styles.statLabel}>Rata-rata Skor</Text>
-        </View>
-
-        <View style={styles.statCard}>
-          <Ionicons name="shield-checkmark" size={20} color="#f59e0b" />
-          <Text style={styles.statValue}>{stats.jumlahLayak}</Text>
-          <Text style={styles.statLabel}>Siap Modal & KUR</Text>
-        </View>
-      </View>
-
-      {/* 3. Search Bar (Komponen TextInput Modul 1) */}
+      {/* 2. Search Bar (Komponen TextInput Modul 1) */}
       <View style={styles.searchWrapper}>
         <Ionicons name="search" size={18} color="#94a3b8" />
         <TextInput
