@@ -15,12 +15,16 @@ export default function DetailAuditScreen() {
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       {/* Header Tombol Kembali */}
       <Pressable style={styles.backRow} onPress={() => router.back()}>
-        <Ionicons name="arrow-back" size={20} color="#2563eb" />
+        <Ionicons name="arrow-back" size={20} color="#52B79B" />
         <Text style={styles.backText}>Kembali ke Dashboard</Text>
       </Pressable>
 
       {/* Banner & Foto Gerai */}
-      <Image source={{ uri: gerai.fotoUrl }} style={styles.bannerImage} resizeMode="cover" />
+      <Image
+        source={gerai.fotoLocal || { uri: gerai.fotoUrl }}
+        style={styles.bannerImage}
+        resizeMode="cover"
+      />
 
       {/* Profil Usaha */}
       <View style={styles.card}>
@@ -63,8 +67,8 @@ export default function DetailAuditScreen() {
       </View>
 
       {/* Catatan Tindak Lanjut Asesor */}
-      <View style={[styles.card, { backgroundColor: "#f0fdf4", borderColor: "#bbf7d0" }]}>
-        <Text style={[styles.sectionHeader, { color: "#166534" }]}>💡 Rekomendasi Resmi Asesor</Text>
+      <View style={[styles.card, { backgroundColor: "#EEF9F5", borderColor: "#C1EBDE" }]}>
+        <Text style={[styles.sectionHeader, { color: "#28735F" }]}>💡 Rekomendasi Resmi Asesor</Text>
         <Text style={styles.rekomendasiText}>{gerai.rekomendasiAsesor}</Text>
       </View>
     </ScrollView>
@@ -72,31 +76,43 @@ export default function DetailAuditScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#f8fafc" },
-  content: { padding: 16 },
+  container: { flex: 1, backgroundColor: "#F4F4F4" },
+  content: {
+    padding: 16,
+    maxWidth: 500,
+    width: "100%",
+    alignSelf: "center",
+  },
   backRow: { flexDirection: "row", alignItems: "center", marginBottom: 12, gap: 6 },
-  backText: { color: "#2563eb", fontWeight: "600", fontSize: 14 },
-  bannerImage: { width: "100%", height: 180, borderRadius: 12, marginBottom: 16 },
+  backText: { color: "#52B79B", fontWeight: "600", fontSize: 14 },
+  bannerImage: {
+    width: "100%",
+    height: 200,
+    borderRadius: 12,
+    marginBottom: 16,
+    resizeMode: "cover",
+    backgroundColor: "#EAEAEA",
+  },
   card: {
     backgroundColor: "#ffffff",
     padding: 16,
     borderRadius: 14,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: "#e2e8f0",
+    borderColor: "#E2E4E6",
   },
   rowBetween: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
-  title: { fontSize: 18, fontWeight: "bold", color: "#0f172a", flex: 1 },
-  badge: { backgroundColor: "#eff6ff", paddingHorizontal: 8, paddingVertical: 4, borderRadius: 6 },
-  badgeText: { fontSize: 12, color: "#2563eb", fontWeight: "600" },
-  subtitle: { fontSize: 13, color: "#475569", marginTop: 4 },
-  founded: { fontSize: 12, color: "#94a3b8", marginTop: 2 },
-  sectionHeader: { fontSize: 15, fontWeight: "bold", color: "#1e293b", marginBottom: 12 },
-  scoreBox: { backgroundColor: "#f1f5f9", padding: 12, borderRadius: 10, alignItems: "center", marginBottom: 12 },
-  scoreNumber: { fontSize: 28, fontWeight: "bold", color: "#1e3a8a" },
-  scoreStatus: { fontSize: 13, fontWeight: "600", color: "#059669", marginTop: 2 },
-  pilarItem: { flexDirection: "row", justifyContent: "space-between", paddingVertical: 6, borderBottomWidth: 1, borderBottomColor: "#f1f5f9" },
-  pilarName: { fontSize: 13, color: "#334155" },
-  pilarValue: { fontSize: 13, fontWeight: "bold", color: "#0f172a" },
-  rekomendasiText: { fontSize: 13, color: "#166534", lineHeight: 20 },
+  title: { fontSize: 18, fontWeight: "bold", color: "#2C3033", flex: 1 },
+  badge: { backgroundColor: "#EEF9F5", paddingHorizontal: 8, paddingVertical: 4, borderRadius: 6 },
+  badgeText: { fontSize: 12, color: "#3D967D", fontWeight: "600" },
+  subtitle: { fontSize: 13, color: "#74787C", marginTop: 4 },
+  founded: { fontSize: 12, color: "#9DA1A5", marginTop: 2 },
+  sectionHeader: { fontSize: 15, fontWeight: "bold", color: "#2C3033", marginBottom: 12 },
+  scoreBox: { backgroundColor: "#F4F4F4", padding: 12, borderRadius: 10, alignItems: "center", marginBottom: 12 },
+  scoreNumber: { fontSize: 28, fontWeight: "bold", color: "#52B79B" },
+  scoreStatus: { fontSize: 13, fontWeight: "600", color: "#28735F", marginTop: 2 },
+  pilarItem: { flexDirection: "row", justifyContent: "space-between", paddingVertical: 6, borderBottomWidth: 1, borderBottomColor: "#E2E4E6" },
+  pilarName: { fontSize: 13, color: "#74787C" },
+  pilarValue: { fontSize: 13, fontWeight: "bold", color: "#2C3033" },
+  rekomendasiText: { fontSize: 13, color: "#28735F", lineHeight: 20 },
 });

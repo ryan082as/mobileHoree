@@ -24,6 +24,7 @@ export interface UMKMKulinerData {
   lokasiKota: string;
   tahunBerdiri: number;
   fotoUrl: string;
+  fotoLocal?: any;
   
   // Metrik Finansial & Operasional Kuliner
   omzetBulanan: number;

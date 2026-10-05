@@ -38,8 +38,14 @@ export function TabButton({ children, isFocused, ...props }: TabTriggerSlotProps
     <Pressable {...props} style={({ pressed }) => pressed && styles.pressed}>
       <ThemedView
         type={isFocused ? 'backgroundSelected' : 'backgroundElement'}
-        style={styles.tabButtonView}>
-        <ThemedText type="small" themeColor={isFocused ? 'text' : 'textSecondary'}>
+        style={[
+          styles.tabButtonView,
+          isFocused && { backgroundColor: '#52B79B' },
+        ]}>
+        <ThemedText
+          type="small"
+          themeColor={isFocused ? 'text' : 'textSecondary'}
+          style={isFocused ? { color: '#ffffff', fontWeight: 'bold' } : { color: '#74787C' }}>
           {children}
         </ThemedText>
       </ThemedView>
@@ -54,7 +60,7 @@ export function CustomTabList(props: TabListProps) {
   return (
     <View {...props} style={styles.tabListContainer}>
       <ThemedView type="backgroundElement" style={styles.innerContainer}>
-        <ThemedText type="smallBold" style={styles.brandText}>
+        <ThemedText type="smallBold" style={[styles.brandText, { color: '#52B79B', fontSize: 15 }]}>
           petaRasa
         </ThemedText>
 
@@ -62,9 +68,9 @@ export function CustomTabList(props: TabListProps) {
 
         <ExternalLink href="https://docs.expo.dev" asChild>
           <Pressable style={styles.externalPressable}>
-            <ThemedText type="link">Docs</ThemedText>
+            <ThemedText type="link" style={{ color: '#74787C' }}>Docs</ThemedText>
             <SymbolView
-              tintColor={colors.text}
+              tintColor="#74787C"
               name={{ ios: 'arrow.up.right.square', web: 'link' }}
               size={12}
             />
@@ -92,7 +98,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexGrow: 1,
     gap: Spacing.two,
-    maxWidth: MaxContentWidth,
+    maxWidth: 500,
+    borderWidth: 1,
+    borderColor: '#E2E4E6',
+    backgroundColor: '#ffffff',
   },
   brandText: {
     marginRight: 'auto',
