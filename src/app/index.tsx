@@ -197,8 +197,11 @@ export default function Index() {
     const status = getStatusBadge(item.skorTotal);
 
     return (
-      <View style={styles.card}>
-        {/* Gambar Foto Makanan / Outlet Kuliner */}
+      <Pressable
+        style={styles.card}
+        onPress={() => router.push(`/umkm/${item.id}` as any)}
+      >
+        {/* 1. Gambar UMKM */}
         <Image
           source={{ uri: item.fotoUrl }}
           style={styles.cardImage}
@@ -206,133 +209,38 @@ export default function Index() {
         />
 
         <View style={styles.cardBody}>
-          {/* Header Kartu: Nama Usaha Kuliner & Sektor */}
+          {/* 2. Baris: Nama UMKM (kiri) & Kategori (kanan) */}
           <View style={styles.cardHeaderRow}>
             <Text style={styles.businessName} numberOfLines={1}>
               {item.namaUsaha}
             </Text>
             <View style={styles.categoryBadge}>
-              <Text style={styles.categoryBadgeText}>{item.kategori}</Text>
+              <Text style={styles.categoryBadgeText}>kategori: {item.kategori}</Text>
             </View>
           </View>
 
-          {/* Pemilik & Kota */}
-          <View style={styles.ownerRow}>
-            <Ionicons name="restaurant-outline" size={14} color="#64748b" />
-            <Text style={styles.ownerText}>
-              {item.namaPemilik} • {item.lokasiKota}
-            </Text>
-          </View>
+          {/* 3. Baris: Lokasi */}
+          <Text style={styles.lokasiText}>
+            lokasi : {item.lokasiKota}
+          </Text>
 
-          {/* Bar Penilaian & Skor (Kriteria: Inline Styles untuk warna dinamis) */}
-          <View style={styles.scoreRow}>
-            <View style={styles.scoreHeader}>
-              <Text style={styles.scoreLabel}>
-                Skor Kelayakan Kuliner:{" "}
-                <Text style={{ fontWeight: "bold" }}>{item.skorTotal}/100</Text>
-              </Text>
-              {/* Inline Style: Warna badge dinamis */}
-              <View
-                style={[
-                  styles.scoreBadgeContainer,
-                  { backgroundColor: status.bgBadge },
-                ]}
-              >
-                <Text style={[styles.scoreBadgeText, { color: status.textBadge }]}>
-                  {status.label}
-                </Text>
-              </View>
-            </View>
-
-            {/* Inline Style: Lebar dan warna progress bar */}
-            <View style={styles.progressBarTrack}>
-              <View
-                style={[
-                  styles.progressBarFill,
-                  {
-                    width: `${item.skorTotal}%`,
-                    backgroundColor: status.barColor,
-                  },
-                ]}
-              />
-            </View>
-          </View>
-
-          {/* Metrik Finansial & Operasional Kuliner */}
-          <View style={styles.metricsGrid}>
-            <View style={styles.metricItem}>
-              <Text style={styles.metricLabel}>Omzet / Bln</Text>
-              <Text style={styles.metricValue}>{formatRupiah(item.omzetBulanan)}</Text>
-            </View>
-            <View style={styles.metricItem}>
-              <Text style={styles.metricLabel}>Laba Bersih</Text>
-              <Text style={styles.metricValue}>{formatRupiah(item.labaBersih)}</Text>
-            </View>
-            <View style={styles.metricItem}>
-              <Text style={styles.metricLabel}>Kapasitas Dapur</Text>
-              <Text style={styles.metricValue}>{item.kapasitasPorsiHarian} Porsi/Hari</Text>
-            </View>
-          </View>
-
-          {/* Kepatuhan Khusus Kuliner (Halal, P-IRT, Online Food, QRIS) */}
-          <View style={styles.complianceRow}>
-            <View style={styles.complianceBadge}>
-              <Ionicons
-                name={item.sertifikatHalal ? "checkmark-circle" : "close-circle"}
-                size={14}
-                color={item.sertifikatHalal ? "#10b981" : "#94a3b8"}
-              />
-              <Text style={styles.complianceText}>Halal BPJPH</Text>
-            </View>
-
-            <View style={styles.complianceBadge}>
-              <Ionicons
-                name={item.izinPIRT_BPOM ? "checkmark-circle" : "close-circle"}
-                size={14}
-                color={item.izinPIRT_BPOM ? "#10b981" : "#94a3b8"}
-              />
-              <Text style={styles.complianceText}>Izin P-IRT/BPOM</Text>
-            </View>
-
-            <View style={styles.complianceBadge}>
-              <Ionicons
-                name={item.terdaftarOnlineFood ? "checkmark-circle" : "close-circle"}
-                size={14}
-                color={item.terdaftarOnlineFood ? "#10b981" : "#94a3b8"}
-              />
-              <Text style={styles.complianceText}>Online Food</Text>
-            </View>
-
-            <View style={styles.complianceBadge}>
-              <Ionicons
-                name={item.adopsiQRIS ? "checkmark-circle" : "close-circle"}
-                size={14}
-                color={item.adopsiQRIS ? "#10b981" : "#94a3b8"}
-              />
-              <Text style={styles.complianceText}>QRIS Kasir</Text>
-            </View>
-          </View>
-
-          {/* Rekomendasi Utama Asesor Kuliner */}
-          <View style={styles.recommendationBox}>
-            <Text style={styles.recommendationText}>
-              🍽️ <Text style={{ fontWeight: "bold" }}>Rapor Higiene & Bisnis:</Text>{" "}
-              {item.rekomendasiAsesor}
-            </Text>
-          </View>
-
-          {/* Tombol Aksi Detail Evaluasi */}
-          <View style={styles.cardActionRow}>
-            <Pressable
-              style={styles.actionButton}
-              onPress={() => router.push(`/umkm/${item.id}` as any)}
+          {/* 4. Baris: Penilaian ⭐ */}
+          <View style={styles.penilaianRow}>
+            <Text style={styles.penilaianText}>penilaian ⭐</Text>
+            {/* Inline Style: Warna badge dinamis sesuai skor kelayakan (Modul 1) */}
+            <View
+              style={[
+                styles.scoreBadgeContainer,
+                { backgroundColor: status.bgBadge, marginLeft: 8 },
+              ]}
             >
-              <Text style={styles.actionButtonText}>Lihat Audit Lengkap</Text>
-              <Ionicons name="arrow-forward" size={14} color="#ffffff" />
-            </Pressable>
+              <Text style={[styles.scoreBadgeText, { color: status.textBadge }]}>
+                {item.skorTotal}/100 ({status.label})
+              </Text>
+            </View>
           </View>
         </View>
-      </View>
+      </Pressable>
     );
   };
 
