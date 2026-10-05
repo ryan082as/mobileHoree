@@ -40,6 +40,9 @@ export default function Index() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<KategoriKuliner>("Semua");
 
+  // State untuk status autentikasi Login / Logout
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
   // State untuk simulasi kalkulasi omzet cepat kuliner
   const [simOmzet, setSimOmzet] = useState<string>("");
   const [simPorsi, setSimPorsi] = useState<string>("");
@@ -120,6 +123,31 @@ export default function Index() {
       "Roadmap Pengembangan",
       `Fitur "${namaFitur}" dijadwalkan pada implementasi ${targetModul}.\n\nModul 1 berfokus pada fondasi UI Kuliner, Type, Looping, dan Custom Functions.`
     );
+  }
+
+  /**
+   * Custom Function: Menangani Aksi Login / Logout di Header
+   */
+  function handleAuthToggle(): void {
+    if (isLoggedIn) {
+      Alert.alert(
+        "Konfirmasi Logout",
+        "Apakah Anda yakin ingin keluar dari akun?",
+        [
+          { text: "Batal", style: "cancel" },
+          {
+            text: "Logout",
+            style: "destructive",
+            onPress: () => {
+              setIsLoggedIn(false);
+              Alert.alert("Berhasil", "Anda telah keluar dari akun.");
+            },
+          },
+        ]
+      );
+    } else {
+      router.push("/(auth)/login" as any);
+    }
   }
 
   /**
@@ -317,32 +345,36 @@ export default function Index() {
       <View style={styles.headerContainer}>
         <View style={styles.headerTopRow}>
           <View style={styles.headerBadge}>
-            <Text style={styles.headerBadgeText}>KulinerCheck UMKM v1.0</Text>
+            <Text style={styles.headerBadgeText}>petaRasa</Text>
           </View>
 
-          {/* Tombol Cepat Auth & Admin */}
+          {/* Tombol Login / Logout */}
           <View style={styles.authButtonsRow}>
             <Pressable
-              style={styles.authBtn}
-              onPress={() => router.push("/(auth)/login" as any)}
+              style={[
+                styles.authBtn,
+                isLoggedIn && {
+                  backgroundColor: "rgba(239, 68, 68, 0.25)",
+                  borderColor: "#f87171",
+                },
+              ]}
+              onPress={handleAuthToggle}
             >
-              <Ionicons name="person-circle-outline" size={16} color="#ffffff" />
-              <Text style={styles.authBtnText}>Masuk</Text>
-            </Pressable>
-
-            <Pressable
-              style={styles.authBtn}
-              onPress={() => router.push("/(admin)/kelola" as any)}
-            >
-              <Ionicons name="shield-checkmark-outline" size={16} color="#ffffff" />
-              <Text style={styles.authBtnText}>Asesor</Text>
+              <Ionicons
+                name={isLoggedIn ? "log-out-outline" : "log-in-outline"}
+                size={16}
+                color="#ffffff"
+              />
+              <Text style={styles.authBtnText}>
+                {isLoggedIn ? "Logout" : "Login"}
+              </Text>
             </Pressable>
           </View>
         </View>
 
-        <Text style={styles.headerTitle}>Penilaian Bisnis Kuliner UMKM</Text>
+        <Text style={styles.headerTitle}>petaRasa</Text>
         <Text style={styles.headerSubtitle}>
-          Sistem Evaluasi Higiene, Kelayakan Finansial & Legalitas Usaha Makanan Minuman
+          Petunjuk Pasti Kuliner Pilihan.
         </Text>
       </View>
 

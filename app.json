@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "apakah-ini-my",
-    "slug": "apakah-ini-my",
+    "name": "petaRasa",
+    "slug": "petarasa",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "apakahinimy",
+    "scheme": "petarasa",
     "userInterfaceStyle": "automatic",
     "ios": {
       "icon": "./assets/expo.icon"
