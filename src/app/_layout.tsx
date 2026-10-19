@@ -7,7 +7,7 @@ export default function RootLayout() {
     <Stack
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#74787C', // Warna Slate tema FlipPlay
+          backgroundColor: '#1E6B56', // Hijau toska gelap (sebelumnya #74787C abu-abu)
         },
         headerTintColor: '#ffffff',
         headerTitleStyle: {
