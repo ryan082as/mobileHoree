@@ -13,8 +13,8 @@ export default function ProfilAsesorScreen() {
         text: "Keluar",
         style: "destructive",
         onPress: () => {
-          // Aksi Logout: Navigasi replace ke login
-          router.replace("/(auth)/login");
+          // Aksi Logout: Navigasi replace ke beranda
+          router.replace("/");
         },
       },
     ]);

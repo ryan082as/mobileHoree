@@ -15,9 +15,12 @@ export default function CatchAllDocsScreen() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Pressable style={styles.backRow} onPress={() => router.back()}>
-        <Ionicons name="arrow-back" size={20} color="#2563eb" />
-        <Text style={styles.backText}>Kembali</Text>
+      <Pressable
+        style={styles.backRow}
+        onPress={() => (router.canGoBack() ? router.back() : router.replace("/"))}
+      >
+        <Ionicons name="arrow-back" size={20} color="#52B79B" />
+        <Text style={styles.backText}>Kembali ke Beranda</Text>
       </Pressable>
 
       <View style={styles.card}>
@@ -29,9 +32,10 @@ export default function CatchAllDocsScreen() {
         <Text style={styles.kategori}>Kategori: {panduan.kategori}</Text>
         <Text style={styles.ringkasan}>{panduan.ringkasan}</Text>
 
-        <Text style={styles.sectionTitle}>Poin-Poin Standar SOP:</Text>
+        <Text style={styles.sectionTitle}>Poin-Poin Standar SOP Asesmen:</Text>
         {panduan.isiLengkap.map((poin, idx) => (
           <View key={idx} style={styles.poinItem}>
+            <Text style={styles.poinBullet}>•</Text>
             <Text style={styles.poinText}>{poin}</Text>
           </View>
         ))}
@@ -41,17 +45,31 @@ export default function CatchAllDocsScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#f8fafc" },
-  content: { padding: 16 },
+  container: { flex: 1, backgroundColor: "#F4F4F4" },
+  content: { padding: 16, maxWidth: 500, alignSelf: "center", width: "100%" },
   backRow: { flexDirection: "row", alignItems: "center", marginBottom: 12, gap: 6 },
-  backText: { color: "#2563eb", fontWeight: "600", fontSize: 14 },
-  card: { backgroundColor: "#ffffff", padding: 20, borderRadius: 16, borderWidth: 1, borderColor: "#e2e8f0" },
-  slugPill: { backgroundColor: "#f1f5f9", paddingHorizontal: 10, paddingVertical: 4, borderRadius: 20, alignSelf: "flex-start", marginBottom: 8 },
-  slugText: { fontSize: 11, color: "#64748b", fontFamily: "monospace" },
-  title: { fontSize: 18, fontWeight: "bold", color: "#0f172a", marginTop: 4 },
-  kategori: { fontSize: 12, color: "#2563eb", fontWeight: "600", marginTop: 2 },
-  ringkasan: { fontSize: 13, color: "#475569", marginVertical: 12, lineHeight: 18 },
-  sectionTitle: { fontSize: 14, fontWeight: "bold", color: "#1e293b", marginTop: 8, marginBottom: 8 },
-  poinItem: { paddingVertical: 6, borderBottomWidth: 1, borderBottomColor: "#f1f5f9" },
-  poinText: { fontSize: 13, color: "#334155" },
+  backText: { color: "#52B79B", fontWeight: "600", fontSize: 14 },
+  card: {
+    backgroundColor: "#ffffff",
+    padding: 20,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: "#E2E4E6",
+  },
+  slugPill: {
+    backgroundColor: "#EEF9F5",
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 20,
+    alignSelf: "flex-start",
+    marginBottom: 8,
+  },
+  slugText: { fontSize: 11, color: "#3D967D", fontWeight: "600" },
+  title: { fontSize: 18, fontWeight: "bold", color: "#2C3033", marginTop: 4 },
+  kategori: { fontSize: 12, color: "#52B79B", fontWeight: "600", marginTop: 2 },
+  ringkasan: { fontSize: 13, color: "#74787C", marginVertical: 12, lineHeight: 18 },
+  sectionTitle: { fontSize: 14, fontWeight: "bold", color: "#2C3033", marginTop: 8, marginBottom: 8 },
+  poinItem: { flexDirection: "row", paddingVertical: 6, borderBottomWidth: 1, borderBottomColor: "#E2E4E6", gap: 8 },
+  poinBullet: { fontSize: 14, color: "#52B79B", fontWeight: "bold" },
+  poinText: { fontSize: 13, color: "#2C3033", flex: 1, lineHeight: 18 },
 });
