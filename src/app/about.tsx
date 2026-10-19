@@ -10,12 +10,12 @@ export default function AboutScreen() {
     <ScrollView style={localStyles.container} contentContainerStyle={localStyles.content}>
       {/* Header Info */}
       <View style={localStyles.headerCard}>
-        <Ionicons name="restaurant" size={48} color="#2563eb" />
-        <Text style={localStyles.title}>KulinerCheck UMKM</Text>
-        <Text style={localStyles.version}>Versi 1.0.0 (Modul 1-6 Architecture)</Text>
+        <Ionicons name="restaurant" size={44} color="#52B79B" />
+        <Text style={localStyles.title}>petaRasa UMKM</Text>
+        <Text style={localStyles.version}>Versi 2.0.0 — Modul 2 Praktikum Pemrograman Mobile</Text>
         <Text style={localStyles.desc}>
-          Aplikasi Sistem Penilaian Kelayakan & Standar Higiene Bisnis Kuliner UMKM
-          untuk mendukung kemandirian usaha dan akses pembiayaan KUR.
+          Petunjuk Pasti Kuliner Pilihan: Aplikasi Sistem Penilaian Kelayakan & Standar Higiene Bisnis Kuliner UMKM
+          di lingkungan sekitar Kampus UMM dan Malang Raya.
         </Text>
       </View>
 
@@ -37,7 +37,10 @@ export default function AboutScreen() {
       </View>
 
       {/* Tombol Kembali */}
-      <Pressable style={localStyles.backBtn} onPress={() => router.back()}>
+      <Pressable
+        style={localStyles.backBtn}
+        onPress={() => (router.canGoBack() ? router.back() : router.replace("/"))}
+      >
         <Ionicons name="arrow-back" size={18} color="#ffffff" />
         <Text style={localStyles.backBtnText}>Kembali ke Dashboard</Text>
       </Pressable>
@@ -46,8 +49,8 @@ export default function AboutScreen() {
 }
 
 const localStyles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#f8fafc" },
-  content: { padding: 16 },
+  container: { flex: 1, backgroundColor: "#F4F4F4" },
+  content: { padding: 16, maxWidth: 500, alignSelf: "center", width: "100%" },
   headerCard: {
     backgroundColor: "#ffffff",
     padding: 24,
@@ -55,26 +58,26 @@ const localStyles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: "#e2e8f0",
+    borderColor: "#E2E4E6",
   },
-  title: { fontSize: 20, fontWeight: "bold", color: "#0f172a", marginTop: 8 },
-  version: { fontSize: 12, color: "#64748b", marginTop: 4 },
-  desc: { fontSize: 13, color: "#475569", textAlign: "center", marginTop: 12, lineHeight: 18 },
+  title: { fontSize: 20, fontWeight: "bold", color: "#2C3033", marginTop: 8 },
+  version: { fontSize: 12, color: "#74787C", marginTop: 4, textAlign: "center" },
+  desc: { fontSize: 13, color: "#74787C", textAlign: "center", marginTop: 12, lineHeight: 18 },
   sectionCard: {
     backgroundColor: "#ffffff",
     padding: 16,
     borderRadius: 16,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: "#e2e8f0",
+    borderColor: "#E2E4E6",
   },
-  sectionTitle: { fontSize: 15, fontWeight: "bold", color: "#1e293b", marginBottom: 12 },
-  memberItem: { paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: "#f1f5f9" },
-  memberName: { fontSize: 13, fontWeight: "600", color: "#0f172a" },
-  memberNim: { fontSize: 12, color: "#64748b", marginTop: 2 },
+  sectionTitle: { fontSize: 15, fontWeight: "bold", color: "#2C3033", marginBottom: 12 },
+  memberItem: { paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: "#E2E4E6" },
+  memberName: { fontSize: 13, fontWeight: "600", color: "#2C3033" },
+  memberNim: { fontSize: 12, color: "#74787C", marginTop: 2 },
   backBtn: {
     flexDirection: "row",
-    backgroundColor: "#2563eb",
+    backgroundColor: "#52B79B",
     paddingVertical: 12,
     borderRadius: 10,
     justifyContent: "center",

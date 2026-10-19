@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Alert,
   FlatList,
@@ -37,17 +37,34 @@ const KATEGORI_KULINER_LIST: KategoriKuliner[] = [
 export default function Index() {
   const router = useRouter();
 
-  // State untuk pencarian dan filter kategori kuliner
+  // Kriteria Modul 2: State Management menggunakan hook useState (Modul 2 Hal 7-8)
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<KategoriKuliner>("Semua");
+  const [filteredUMKM, setFilteredUMKM] = useState<UMKMKulinerData[]>(DAFTAR_UMKM_KULINER);
 
-  // State untuk status autentikasi Login / Logout
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
-  // State untuk simulasi kalkulasi omzet cepat kuliner
-  const [simOmzet, setSimOmzet] = useState<string>("");
-  const [simPorsi, setSimPorsi] = useState<string>("");
-  const [simHasil, setSimHasil] = useState<string | null>(null);
+  // =========================================================================
+  // HOOK USEEFFECT (Kriteria Penilaian Modul 2: useEffect, Hal 9-10, 43)
+  // =========================================================================
+
+  // 1. Initial Render Effect (Hal 10 Modul 2): Dipanggil sekali saat komponen dimuat
+  useEffect(() => {
+    console.log("petaRasa Dashboard siap! Memuat gerai kuliner lokal UMM.");
+  }, []);
+
+  // 2. Dependency Effect (Hal 9 Modul 2): Menjalankan filter otomatis saat searchQuery atau selectedCategory berubah
+  useEffect(() => {
+    const hasil = DAFTAR_UMKM_KULINER.filter((item) => {
+      const matchCategory =
+        selectedCategory === "Semua" || item.kategori === selectedCategory;
+      const matchSearch =
+        item.namaUsaha.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.namaPemilik.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.lokasiKota.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchCategory && matchSearch;
+    });
+    setFilteredUMKM(hasil);
+  }, [searchQuery, selectedCategory]);
 
   // =========================================================================
   // 3. CUSTOM FUNCTIONS (Kriteria Penilaian: Deklarasi Custom Function)
@@ -126,68 +143,6 @@ export default function Index() {
     );
   }
 
-  /**
-   * Custom Function: Menangani Aksi Login / Logout di Header
-   */
-  function handleAuthToggle(): void {
-    if (isLoggedIn) {
-      Alert.alert(
-        "Konfirmasi Logout",
-        "Apakah Anda yakin ingin keluar dari akun?",
-        [
-          { text: "Batal", style: "cancel" },
-          {
-            text: "Logout",
-            style: "destructive",
-            onPress: () => {
-              setIsLoggedIn(false);
-              Alert.alert("Berhasil", "Anda telah keluar dari akun.");
-            },
-          },
-        ]
-      );
-    } else {
-      router.push("/(auth)/login" as any);
-    }
-  }
-
-  /**
-   * Custom Function 5: Simulasi perhitungan kelayakan usaha kuliner instan
-   */
-  function hitungSimulasiKuliner(): void {
-    const omzet = parseInt(simOmzet.replace(/[^0-9]/g, ""), 10);
-    const porsi = parseInt(simPorsi.replace(/[^0-9]/g, ""), 10) || 0;
-
-    if (isNaN(omzet) || omzet <= 0) {
-      Alert.alert("Perhatian", "Silakan masukkan estimasi omzet bulanan yang valid!");
-      return;
-    }
-
-    if (omzet >= 25000000 && porsi >= 150) {
-      setSimHasil(
-        "✅ Prediksi Skor: 85+ (Sangat Layak). Skala dapur siap ekspor/franchise & pengajuan pinjaman bank modal kerja."
-      );
-    } else if (omzet >= 10000000) {
-      setSimHasil(
-        "👍 Prediksi Skor: 70-84 (Cukup Layak). Layak KUR Mikro. Prioritas: Sertifikasi Halal dan integrasi Online Food."
-      );
-    } else {
-      setSimHasil(
-        "⚠️ Prediksi Skor: < 70 (Perlu Pembinaan). Disarankan mengikuti pelatihan HPP kuliner dan pengurusan P-IRT."
-      );
-    }
-  }
-
-  // Filter Data berdasarkan input pencarian dan kategori chip
-  const filteredUMKM = DAFTAR_UMKM_KULINER.filter((item) => {
-    const matchCategory =
-      selectedCategory === "Semua" || item.kategori === selectedCategory;
-    const matchSearch =
-      item.namaUsaha.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.namaPemilik.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.lokasiKota.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchCategory && matchSearch;
-  });
 
   const stats = hitungRingkasan(DAFTAR_UMKM_KULINER);
 
@@ -257,26 +212,38 @@ export default function Index() {
             <Text style={styles.headerBadgeText}>petaRasa</Text>
           </View>
 
-          {/* Tombol Login / Logout */}
+          {/* Tombol Navigasi Cepat (Kriteria Modul 2: router.push(), Hal 32) */}
           <View style={styles.authButtonsRow}>
+            {/* Catch-All Route Navigasi /docs/[...slug] */}
             <Pressable
-              style={[
-                styles.authBtn,
-                isLoggedIn && {
-                  backgroundColor: "rgba(239, 68, 68, 0.25)",
-                  borderColor: "#f87171",
-                },
-              ]}
-              onPress={handleAuthToggle}
+              style={styles.authBtn}
+              onPress={() => router.push("/docs/halal")}
             >
-              <Ionicons
-                name={isLoggedIn ? "log-out-outline" : "log-in-outline"}
-                size={16}
-                color="#ffffff"
-              />
-              <Text style={styles.authBtnText}>
-                {isLoggedIn ? "Logout" : "Login"}
-              </Text>
+              <Ionicons name="book-outline" size={14} color="#ffffff" />
+              <Text style={styles.authBtnText}>SOP</Text>
+            </Pressable>
+
+            {/* Normal Page Navigasi /about */}
+            <Pressable
+              style={styles.authBtn}
+              onPress={() => router.push("/about")}
+            >
+              <Ionicons name="people-outline" size={14} color="#ffffff" />
+              <Text style={styles.authBtnText}>Tim</Text>
+            </Pressable>
+
+            {/* Tombol Login */}
+            <Pressable
+              style={styles.authBtn}
+              onPress={() =>
+                Alert.alert(
+                  "Masuk Akun",
+                  "Fitur login sedang disiapkan sesuai alur autentikasi kelompok."
+                )
+              }
+            >
+              <Ionicons name="log-in-outline" size={14} color="#ffffff" />
+              <Text style={styles.authBtnText}>Login</Text>
             </Pressable>
           </View>
         </View>

@@ -1,18 +1,58 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useColorScheme } from 'react-native';
+import React from 'react';
+import { Stack } from 'expo-router';
 
-import { AnimatedSplashOverlay } from '@/components/animated-icon';
-import AppTabs from '@/components/app-tabs';
-
-SplashScreen.preventAutoHideAsync();
-
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+// Kriteria Modul 2: Penerapan _layout.tsx dan <Stack.Screen> (Hal 30-31, 40, 43)
+export default function RootLayout() {
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <AnimatedSplashOverlay />
-      <AppTabs />
-    </ThemeProvider>
+    <Stack
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#74787C', // Warna Slate tema FlipPlay
+        },
+        headerTintColor: '#ffffff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+        contentStyle: {
+          backgroundColor: '#F4F4F4', // Warna Mercury tema FlipPlay
+        },
+      }}
+    >
+      {/* 1. Halaman Utama / Dashboard (Header custom di dalam index) */}
+      <Stack.Screen
+        name="index"
+        options={{
+          headerShown: false,
+          title: 'petaRasa',
+        }}
+      />
+
+      {/* 2. Dynamic Route Halaman Detail UMKM ([id].tsx) */}
+      <Stack.Screen
+        name="umkm/[id]"
+        options={{
+          headerShown: false,
+          title: 'Detail Gerai Kuliner',
+        }}
+      />
+
+      {/* 3. Catch-All Route: Dokumentasi & Regulasi SOP (docs/[...slug].tsx) */}
+      <Stack.Screen
+        name="docs/[...slug]"
+        options={{
+          title: 'Panduan Regulasi & SOP',
+          headerBackTitle: 'Beranda',
+        }}
+      />
+
+      {/* 6. Normal Page: Halaman Profil Tim (about.tsx) */}
+      <Stack.Screen
+        name="about"
+        options={{
+          title: 'Profil Tim Pengembang',
+          headerBackTitle: 'Beranda',
+        }}
+      />
+    </Stack>
   );
 }
