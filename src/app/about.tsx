@@ -24,15 +24,15 @@ export default function AboutScreen() {
         <Text style={localStyles.sectionTitle}>👥 Tim Pengembang (Kelompok)</Text>
         <View style={localStyles.memberItem}>
           <Text style={localStyles.memberName}>1. Anggota 1 (Frontend & UI/UX)</Text>
-          <Text style={localStyles.memberNim}>NIM: 202610370311xxx</Text>
+          <Text style={localStyles.memberNim}>NIM: 202410370110475</Text>
         </View>
         <View style={localStyles.memberItem}>
           <Text style={localStyles.memberName}>2. Anggota 2 (Logic & State Management)</Text>
-          <Text style={localStyles.memberNim}>NIM: 202610370311xxx</Text>
+          <Text style={localStyles.memberNim}>NIM: 202410370110458</Text>
         </View>
         <View style={localStyles.memberItem}>
           <Text style={localStyles.memberName}>3. Anggota 3 (Database & API Integration)</Text>
-          <Text style={localStyles.memberNim}>NIM: 202610370311xxx</Text>
+          <Text style={localStyles.memberNim}>NIM: 202410370110082</Text>
         </View>
       </View>
 

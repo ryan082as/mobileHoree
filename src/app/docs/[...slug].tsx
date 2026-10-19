@@ -24,12 +24,10 @@ export default function CatchAllDocsScreen() {
       </Pressable>
 
       <View style={styles.card}>
-        <View style={styles.slugPill}>
-          <Text style={styles.slugText}>Path: /docs/{currentSlug}</Text>
-        </View>
-
         <Text style={styles.title}>{panduan.judul}</Text>
-        <Text style={styles.kategori}>Kategori: {panduan.kategori}</Text>
+        <View style={styles.kategoriChip}>
+          <Text style={styles.kategoriText}>Kategori: {panduan.kategori}</Text>
+        </View>
         <Text style={styles.ringkasan}>{panduan.ringkasan}</Text>
 
         <Text style={styles.sectionTitle}>Poin-Poin Standar SOP Asesmen:</Text>
@@ -56,17 +54,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#E2E4E6",
   },
-  slugPill: {
-    backgroundColor: "#EEF9F5",
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 20,
-    alignSelf: "flex-start",
-    marginBottom: 8,
-  },
-  slugText: { fontSize: 11, color: "#3D967D", fontWeight: "600" },
   title: { fontSize: 18, fontWeight: "bold", color: "#2C3033", marginTop: 4 },
-  kategori: { fontSize: 12, color: "#52B79B", fontWeight: "600", marginTop: 2 },
+  kategoriChip: {
+    backgroundColor: "#E6F4F1", // Background lembut (soft teal)
+    borderColor: "#B8E3D8",
+    borderWidth: 1,
+    paddingHorizontal: 12,
+    paddingVertical: 5,
+    borderRadius: 16,
+    alignSelf: "flex-start",
+    marginTop: 6,
+    marginBottom: 6,
+  },
+  kategoriText: { fontSize: 12, color: "#1E6B56", fontWeight: "600" },
   ringkasan: { fontSize: 13, color: "#74787C", marginVertical: 12, lineHeight: 18 },
   sectionTitle: { fontSize: 14, fontWeight: "bold", color: "#2C3033", marginTop: 8, marginBottom: 8 },
   poinItem: { flexDirection: "row", paddingVertical: 6, borderBottomWidth: 1, borderBottomColor: "#E2E4E6", gap: 8 },
