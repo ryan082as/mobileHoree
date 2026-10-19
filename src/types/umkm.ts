@@ -16,6 +16,15 @@ export interface SkorAspekKuliner {
   operasionalDapur: number;   // Kapasitas porsi & tenaga kerja
 }
 
+export interface MenuPopulerItem {
+  id: string;
+  nama: string;
+  deskripsi: string;
+  harga: number;
+  isFavorit?: boolean;
+  fotoUrl?: string;
+}
+
 export interface UMKMKulinerData {
   id: string;
   namaUsaha: string;
@@ -25,6 +34,7 @@ export interface UMKMKulinerData {
   tahunBerdiri: number;
   fotoUrl: string;
   fotoLocal?: any;
+  menuPopuler?: MenuPopulerItem[];
   
   // Metrik Finansial & Operasional Kuliner
   omzetBulanan: number;

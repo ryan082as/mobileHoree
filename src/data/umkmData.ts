@@ -29,6 +29,36 @@ export const DAFTAR_UMKM_KULINER: UMKMKulinerData[] = [
     },
     rekomendasiAsesor:
       "Kafe ikonik di lingkungan kampus UMM. Standar kebersihan dan pengelolaan keuangan sangat prima, layak kemitraan permodalan.",
+    menuPopuler: [
+      {
+        id: "menu-01",
+        nama: "Kopi Susu Kontainer",
+        deskripsi: "Espresso robusta & arabika blend dengan susu segar dan gula aren asli Malang.",
+        harga: 18000,
+        isFavorit: true,
+      },
+      {
+        id: "menu-02",
+        nama: "Matcha Latte Ice",
+        deskripsi: "Green tea matcha premium dengan susu creamy dan es batu segar.",
+        harga: 22000,
+        isFavorit: true,
+      },
+      {
+        id: "menu-03",
+        nama: "Croissant Toast Keju",
+        deskripsi: "Pastry renyah isi keju cheddar melted gurih teman minum kopi.",
+        harga: 16000,
+        isFavorit: false,
+      },
+      {
+        id: "menu-04",
+        nama: "Caramel Macchiato Cold",
+        deskripsi: "Kombinasi vanila, susu, espresso double shot dan drizzle saus karamel.",
+        harga: 24000,
+        isFavorit: false,
+      },
+    ],
   },
   {
     id: "kuliner-02",
@@ -58,6 +88,36 @@ export const DAFTAR_UMKM_KULINER: UMKMKulinerData[] = [
     },
     rekomendasiAsesor:
       "Perputaran omzet harian sangat tinggi berkat mahasiswa UMM. Disarankan melengkapi Sertifikat Laik Higiene Sanitasi (SLHS).",
+    menuPopuler: [
+      {
+        id: "menu-05",
+        nama: "Paket Nasi Ayam Lengkuas",
+        deskripsi: "Nasi pulen hangat dengan ayam goreng bumbu lengkuas, sambal terasi, dan lalapan.",
+        harga: 18000,
+        isFavorit: true,
+      },
+      {
+        id: "menu-06",
+        nama: "Cumi Basah Hitam Pedas",
+        deskripsi: "Tumis cumi tinta hitam segar dengan cabai rawit pedas mantap.",
+        harga: 20000,
+        isFavorit: true,
+      },
+      {
+        id: "menu-07",
+        nama: "Oreg Tempe & Telur Balado",
+        deskripsi: "Tempe orek manis renyah dipadu telur bulat saus balado khas warteg.",
+        harga: 12000,
+        isFavorit: false,
+      },
+      {
+        id: "menu-08",
+        nama: "Es Teh Manis Jumbo",
+        deskripsi: "Teh melati wangi diseduh segar ukuran jumbo pelepas dahaga.",
+        harga: 5000,
+        isFavorit: false,
+      },
+    ],
   },
   {
     id: "kuliner-03",
@@ -87,5 +147,35 @@ export const DAFTAR_UMKM_KULINER: UMKMKulinerData[] = [
     },
     rekomendasiAsesor:
       "Bakso legendaris kawasan kampus dengan cita rasa autentik konsisten. Siap ekspansi cabang baru dan pengajuan KUR Bank.",
+    menuPopuler: [
+      {
+        id: "menu-09",
+        nama: "Bakso Campur Spesial",
+        deskripsi: "Bakso halus, bakso urat, pangsit basah, tahu bakso dengan kuah kaldu sapi sumsum.",
+        harga: 22000,
+        isFavorit: true,
+      },
+      {
+        id: "menu-10",
+        nama: "Bakso Tetelan Mercon",
+        deskripsi: "Bakso urat daging sapi melimpah dengan potongan tetelan empuk dan kuah pedas gurih.",
+        harga: 28000,
+        isFavorit: true,
+      },
+      {
+        id: "menu-11",
+        nama: "Pangsit Goreng Crispy (3 pcs)",
+        deskripsi: "Pangsit renyah gurih khas Malang pendamping makan bakso yang renyah.",
+        harga: 10000,
+        isFavorit: false,
+      },
+      {
+        id: "menu-12",
+        nama: "Es Jeruk Peras Murni",
+        deskripsi: "Jeruk peras manis segar kaya vitamin C penutup kuah bakso.",
+        harga: 7000,
+        isFavorit: false,
+      },
+    ],
   },
 ];
