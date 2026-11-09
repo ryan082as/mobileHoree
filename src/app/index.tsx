@@ -58,8 +58,12 @@ function SearchHeader({
     <View>
       <View style={styles.headerContainer}>
         <View style={styles.headerTopRow}>
-          <View style={styles.headerBadge}>
-            <Text style={styles.headerBadgeText}>petaRasa</Text>
+          <View style={styles.logoCard}>
+            <Image
+              source={require("@/assets/images/petarasa-logo.png")}
+              style={styles.logoImage}
+              resizeMode="contain"
+            />
           </View>
 
           <View style={styles.authButtonsRow}>
@@ -79,11 +83,6 @@ function SearchHeader({
             </Pressable>
           </View>
         </View>
-
-        <Text style={styles.headerTitle}>petaRasa</Text>
-        <Text style={styles.headerSubtitle}>
-          Petunjuk Pasti Kuliner Pilihan.
-        </Text>
       </View>
 
       <View style={styles.searchWrapper}>
