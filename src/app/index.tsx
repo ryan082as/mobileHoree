@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
+  ActivityIndicator,
   Alert,
   FlatList,
   Image,
@@ -12,18 +13,14 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 
-// 1. IMPORT DATA & TYPES (Kriteria: Type & Array of Objects)
 import {
   KategoriKuliner,
   RingkasanStatistikKuliner,
   UMKMKulinerData,
 } from "@/types/umkm";
-import { DAFTAR_UMKM_KULINER } from "@/data/umkmData";
-
-// 2. IMPORT EXTERNAL STYLING (Kriteria: External Styles)
+import { getDaftarUMKM, fetchAllUMKMFromAPI } from "@/services/umkmService";
 import { styles } from "@/styles/umkmStyles";
 
-// Daftar Kategori Khusus Kuliner untuk Looping Filter
 const KATEGORI_KULINER_LIST: KategoriKuliner[] = [
   "Semua",
   "Makanan Berat",
@@ -37,24 +34,36 @@ const KATEGORI_KULINER_LIST: KategoriKuliner[] = [
 export default function Index() {
   const router = useRouter();
 
-  // Kriteria Modul 2: State Management menggunakan hook useState (Modul 2 Hal 7-8)
+  const [allUMKM, setAllUMKM] = useState<UMKMKulinerData[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<KategoriKuliner>("Semua");
-  const [filteredUMKM, setFilteredUMKM] = useState<UMKMKulinerData[]>(DAFTAR_UMKM_KULINER);
+  const [filteredUMKM, setFilteredUMKM] = useState<UMKMKulinerData[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-
-  // =========================================================================
-  // HOOK USEEFFECT (Kriteria Penilaian Modul 2: useEffect, Hal 9-10, 43)
-  // =========================================================================
-
-  // 1. Initial Render Effect (Hal 10 Modul 2): Dipanggil sekali saat komponen dimuat
   useEffect(() => {
-    console.log("petaRasa Dashboard siap! Memuat gerai kuliner lokal UMM.");
+    loadData();
   }, []);
 
-  // 2. Dependency Effect (Hal 9 Modul 2): Menjalankan filter otomatis saat searchQuery atau selectedCategory berubah
+  async function loadData(forceRefresh = false) {
+    if (forceRefresh) setIsRefreshing(true);
+    else setIsLoading(true);
+    setErrorMessage(null);
+    try {
+      const data = forceRefresh ? await fetchAllUMKMFromAPI() : await getDaftarUMKM();
+      setAllUMKM(data);
+    } catch (err: any) {
+      console.error("Gagal memuat data API:", err);
+      setErrorMessage(err.message || "Gagal menghubungi server API eksternal.");
+    } finally {
+      setIsLoading(false);
+      setIsRefreshing(false);
+    }
+  }
+
   useEffect(() => {
-    const hasil = DAFTAR_UMKM_KULINER.filter((item) => {
+    const hasil = allUMKM.filter((item) => {
       const matchCategory =
         selectedCategory === "Semua" || item.kategori === selectedCategory;
       const matchSearch =
@@ -64,22 +73,12 @@ export default function Index() {
       return matchCategory && matchSearch;
     });
     setFilteredUMKM(hasil);
-  }, [searchQuery, selectedCategory]);
+  }, [searchQuery, selectedCategory, allUMKM]);
 
-  // =========================================================================
-  // 3. CUSTOM FUNCTIONS (Kriteria Penilaian: Deklarasi Custom Function)
-  // =========================================================================
-
-  /**
-   * Custom Function 1: Format angka ke format mata uang Rupiah
-   */
   function formatRupiah(nominal: number): string {
     return "Rp " + nominal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   }
 
-  /**
-   * Custom Function 2: Menentukan badge warna, label, dan icon berdasarkan skor kuliner
-   */
   function getStatusBadge(skor: number) {
     if (skor >= 85) {
       return {
@@ -116,9 +115,6 @@ export default function Index() {
     }
   }
 
-  /**
-   * Custom Function 3: Menghitung statistik ringkasan dari array UMKM kuliner
-   */
   function hitungRingkasan(list: UMKMKulinerData[]): RingkasanStatistikKuliner {
     if (list.length === 0) {
       return { totalUMKM: 0, rataRataSkor: 0, jumlahLayak: 0 };
@@ -133,22 +129,6 @@ export default function Index() {
     };
   }
 
-  /**
-   * Custom Function 4: Menangani tombol roadmap lanjutan (Modul 2 & 3)
-   */
-  function handleComingSoon(namaFitur: string, targetModul: string): void {
-    Alert.alert(
-      "Roadmap Pengembangan",
-      `Fitur "${namaFitur}" dijadwalkan pada implementasi ${targetModul}.\n\nModul 1 berfokus pada fondasi UI Kuliner, Type, Looping, dan Custom Functions.`
-    );
-  }
-
-
-  const stats = hitungRingkasan(DAFTAR_UMKM_KULINER);
-
-  // =========================================================================
-  // KOMPONEN RENDER KARTU UMKM KULINER
-  // =========================================================================
   const renderUMKMCard = ({ item }: { item: UMKMKulinerData }) => {
     const status = getStatusBadge(item.skorTotal);
 
@@ -157,15 +137,13 @@ export default function Index() {
         style={styles.card}
         onPress={() => router.push(`/umkm/${item.id}` as any)}
       >
-        {/* 1. Gambar UMKM */}
         <Image
-          source={item.fotoLocal || { uri: item.fotoUrl }}
+          source={{ uri: item.fotoUrl }}
           style={styles.cardImage}
           resizeMode="cover"
         />
 
         <View style={styles.cardBody}>
-          {/* 2. Baris: Nama UMKM (kiri) & Kategori (kanan) */}
           <View style={styles.cardHeaderRow}>
             <Text style={styles.businessName} numberOfLines={1}>
               {item.namaUsaha}
@@ -175,15 +153,12 @@ export default function Index() {
             </View>
           </View>
 
-          {/* 3. Baris: Lokasi */}
-          <Text style={styles.lokasiText}>
+          <Text style={styles.lokasiText} numberOfLines={1}>
             lokasi : {item.lokasiKota}
           </Text>
 
-          {/* 4. Baris: Penilaian ⭐ */}
           <View style={styles.penilaianRow}>
             <Text style={styles.penilaianText}>penilaian ⭐</Text>
-            {/* Inline Style: Warna badge dinamis sesuai skor kelayakan (Modul 1) */}
             <View
               style={[
                 styles.scoreBadgeContainer,
@@ -200,21 +175,15 @@ export default function Index() {
     );
   };
 
-  // =========================================================================
-  // HEADER BAGIAN ATAS LAYAR
-  // =========================================================================
   const renderHeader = () => (
     <View>
-      {/* 1. Header App Bar */}
       <View style={styles.headerContainer}>
         <View style={styles.headerTopRow}>
           <View style={styles.headerBadge}>
             <Text style={styles.headerBadgeText}>petaRasa</Text>
           </View>
 
-          {/* Tombol Navigasi Cepat (Kriteria Modul 2: router.push(), Hal 32) */}
           <View style={styles.authButtonsRow}>
-            {/* Catch-All Route Navigasi /docs/[...slug] */}
             <Pressable
               style={styles.authBtn}
               onPress={() => router.push("/docs/halal")}
@@ -223,7 +192,6 @@ export default function Index() {
               <Text style={styles.authBtnText}>SOP</Text>
             </Pressable>
 
-            {/* Normal Page Navigasi /about */}
             <Pressable
               style={styles.authBtn}
               onPress={() => router.push("/about")}
@@ -232,7 +200,6 @@ export default function Index() {
               <Text style={styles.authBtnText}>Tim</Text>
             </Pressable>
 
-            {/* Tombol Login */}
             <Pressable
               style={styles.authBtn}
               onPress={() =>
@@ -254,7 +221,6 @@ export default function Index() {
         </Text>
       </View>
 
-      {/* 2. Search Bar (Komponen TextInput Modul 1) */}
       <View style={styles.searchWrapper}>
         <Ionicons name="search" size={18} color="#74787C" />
         <TextInput
@@ -271,7 +237,6 @@ export default function Index() {
         )}
       </View>
 
-      {/* 4. Filter Kategori Kuliner (Kriteria: Looping .map() & Key Prop Sesuai Modul 1 Hal 34-37) */}
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -285,13 +250,13 @@ export default function Index() {
               onPress={() => setSelectedCategory(item)}
               style={[
                 styles.categoryChip,
-                isSelected && { backgroundColor: "#52B79B" }, // Kriteria: Inline Style
+                isSelected && { backgroundColor: "#52B79B" },
               ]}
             >
               <Text
                 style={[
                   styles.categoryChipText,
-                  isSelected && { color: "#ffffff" }, // Kriteria: Inline Style
+                  isSelected && { color: "#ffffff" },
                 ]}
               >
                 {item}
@@ -301,19 +266,15 @@ export default function Index() {
         })}
       </ScrollView>
 
-      {/* 5. Judul List Section */}
       <View style={styles.sectionTitleRow}>
         <Text style={styles.sectionTitle}>Daftar Hasil Audit Kuliner</Text>
         <Text style={styles.sectionCount}>
-          Menampilkan {filteredUMKM.length} dari {DAFTAR_UMKM_KULINER.length} gerai
+          Menampilkan {filteredUMKM.length} dari {allUMKM.length} gerai
         </Text>
       </View>
     </View>
   );
 
-  // =========================================================================
-  // FOOTER BAGIAN BAWAH LAYAR
-  // =========================================================================
   const renderFooter = () => (
     <View style={styles.footerBox}>
       <Text style={styles.footerText}>Praktikum Pemrograman Mobile</Text>
@@ -323,9 +284,6 @@ export default function Index() {
     </View>
   );
 
-  // =========================================================================
-  // 4. LOOPING UTAMA (Kriteria: Looping dengan FlatList)
-  // =========================================================================
   return (
     <View style={styles.container}>
       <FlatList
@@ -336,13 +294,48 @@ export default function Index() {
         ListFooterComponent={renderFooter}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
+        refreshing={isRefreshing}
+        onRefresh={() => loadData(true)}
         ListEmptyComponent={
-          <View style={{ padding: 30, alignItems: "center" }}>
-            <Ionicons name="restaurant-outline" size={48} color="#9DA1A5" />
-            <Text style={{ marginTop: 12, color: "#74787C", fontSize: 14 }}>
-              Tidak ada usaha kuliner yang cocok dengan filter pencarian.
-            </Text>
-          </View>
+          isLoading ? (
+            <View style={{ padding: 40, alignItems: "center" }}>
+              <ActivityIndicator size="large" color="#52B79B" />
+              <Text style={{ marginTop: 12, color: "#74787C", fontSize: 13 }}>
+                Memuat gerai kuliner nyata dari OpenStreetMap & TheMealDB...
+              </Text>
+            </View>
+          ) : errorMessage ? (
+            <View style={{ padding: 30, alignItems: "center" }}>
+              <Ionicons name="cloud-offline-outline" size={54} color="#ef4444" />
+              <Text style={{ marginTop: 12, color: "#ef4444", fontWeight: "bold", fontSize: 16 }}>
+                Gagal Memuat API Eksternal
+              </Text>
+              <Text style={{ marginTop: 6, color: "#74787C", fontSize: 13, textAlign: "center", maxWidth: 360, lineHeight: 18 }}>
+                {errorMessage}
+              </Text>
+              <Pressable
+                style={{
+                  marginTop: 18,
+                  backgroundColor: "#52B79B",
+                  paddingHorizontal: 20,
+                  paddingVertical: 10,
+                  borderRadius: 8,
+                }}
+                onPress={() => loadData(true)}
+              >
+                <Text style={{ color: "#ffffff", fontWeight: "bold", fontSize: 13 }}>
+                  Coba Hubungkan Lagi
+                </Text>
+              </Pressable>
+            </View>
+          ) : (
+            <View style={{ padding: 30, alignItems: "center" }}>
+              <Ionicons name="restaurant-outline" size={48} color="#9DA1A5" />
+              <Text style={{ marginTop: 12, color: "#74787C", fontSize: 14 }}>
+                Tidak ada usaha kuliner yang cocok dengan filter pencarian.
+              </Text>
+            </View>
+          )
         }
       />
     </View>

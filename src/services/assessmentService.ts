@@ -1,13 +1,6 @@
 import { SkorAspekKuliner, StatusKelayakan } from "@/types/umkm";
 
-/**
- * Service untuk kalkulasi skor berbobot (Weighted Scoring) 4 pilar bisnis kuliner
- * Bobot:
- * - Higiene & Sanitasi: 30%
- * - Keuangan & HPP: 30%
- * - Pemasaran Digital: 20%
- * - Operasional Dapur: 20%
- */
+
 export function kalkulasiSkorKuliner(aspek: SkorAspekKuliner): number {
   const skor =
     aspek.higieneSanitasi * 0.3 +

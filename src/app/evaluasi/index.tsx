@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput, ScrollView, Pressable, Alert } from "react-native";
+import { View, Text, TextInput, ScrollView, Pressable, Alert } from "react-native";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { styles } from "@/styles/evaluasiStyles";
 
 export default function EvaluasiMandiriScreen() {
   const router = useRouter();
@@ -22,7 +23,7 @@ export default function EvaluasiMandiriScreen() {
       [
         {
           text: "Kembali ke Beranda",
-          onPress: () => router.replace("/"), // Memenuhi fungsi replace() di Modul 2!
+          onPress: () => router.replace("/"),
         },
       ]
     );
@@ -31,7 +32,7 @@ export default function EvaluasiMandiriScreen() {
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <Pressable style={styles.backRow} onPress={() => router.back()}>
-        <Ionicons name="arrow-back" size={20} color="#2563eb" />
+        <Ionicons name="arrow-back" size={20} color="#52B79B" />
         <Text style={styles.backText}>Batal & Kembali</Text>
       </Pressable>
 
@@ -74,25 +75,3 @@ export default function EvaluasiMandiriScreen() {
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#f8fafc" },
-  content: { padding: 16 },
-  backRow: { flexDirection: "row", alignItems: "center", marginBottom: 12, gap: 6 },
-  backText: { color: "#2563eb", fontWeight: "600", fontSize: 14 },
-  card: { backgroundColor: "#ffffff", padding: 20, borderRadius: 16, borderWidth: 1, borderColor: "#e2e8f0" },
-  title: { fontSize: 18, fontWeight: "bold", color: "#0f172a" },
-  desc: { fontSize: 12, color: "#64748b", marginTop: 4, marginBottom: 16 },
-  label: { fontSize: 13, fontWeight: "600", color: "#334155", marginBottom: 6 },
-  input: {
-    borderWidth: 1,
-    borderColor: "#cbd5e1",
-    borderRadius: 8,
-    padding: 10,
-    fontSize: 14,
-    marginBottom: 16,
-    backgroundColor: "#f8fafc",
-  },
-  submitBtn: { backgroundColor: "#059669", paddingVertical: 12, borderRadius: 8, alignItems: "center", marginTop: 8 },
-  submitBtnText: { color: "#ffffff", fontWeight: "bold", fontSize: 14 },
-});

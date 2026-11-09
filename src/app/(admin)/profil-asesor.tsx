@@ -1,7 +1,8 @@
 import React from "react";
-import { View, Text, StyleSheet, Pressable, Alert } from "react-native";
+import { View, Text, Pressable, Alert } from "react-native";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+import { styles } from "@/styles/profilStyles";
 
 export default function ProfilAsesorScreen() {
   const router = useRouter();
@@ -13,7 +14,6 @@ export default function ProfilAsesorScreen() {
         text: "Keluar",
         style: "destructive",
         onPress: () => {
-          // Aksi Logout: Navigasi replace ke beranda
           router.replace("/");
         },
       },
@@ -23,7 +23,7 @@ export default function ProfilAsesorScreen() {
   return (
     <View style={styles.container}>
       <Pressable style={styles.backRow} onPress={() => router.back()}>
-        <Ionicons name="arrow-back" size={20} color="#2563eb" />
+        <Ionicons name="arrow-back" size={20} color="#52B79B" />
         <Text style={styles.backText}>Kembali ke Dashboard</Text>
       </Pressable>
 
@@ -46,25 +46,3 @@ export default function ProfilAsesorScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#f8fafc", padding: 20 },
-  backRow: { flexDirection: "row", alignItems: "center", marginBottom: 20, gap: 6 },
-  backText: { color: "#2563eb", fontWeight: "600", fontSize: 14 },
-  card: { backgroundColor: "#ffffff", padding: 24, borderRadius: 16, alignItems: "center", borderWidth: 1, borderColor: "#e2e8f0" },
-  avatar: { width: 72, height: 72, borderRadius: 36, backgroundColor: "#1e3a8a", alignItems: "center", justifyContent: "center", marginBottom: 12 },
-  name: { fontSize: 18, fontWeight: "bold", color: "#0f172a" },
-  role: { fontSize: 13, color: "#2563eb", fontWeight: "600", marginTop: 2 },
-  email: { fontSize: 12, color: "#64748b", marginTop: 4 },
-  divider: { width: "100%", height: 1, backgroundColor: "#f1f5f9", marginVertical: 20 },
-  logoutBtn: {
-    flexDirection: "row",
-    backgroundColor: "#ef4444",
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
-    alignItems: "center",
-    gap: 8,
-  },
-  logoutText: { color: "#ffffff", fontWeight: "bold", fontSize: 14 },
-});

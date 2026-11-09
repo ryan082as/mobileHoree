@@ -7,7 +7,7 @@ export interface PanduanRegulasi {
 }
 
 export const DATA_REGULASI: Record<string, PanduanRegulasi> = {
-  "halal": {
+  halal: {
     slug: "halal",
     judul: "SOP Sertifikasi Halal BPJPH & MUI",
     kategori: "Legalitas Pangan",
@@ -19,7 +19,7 @@ export const DATA_REGULASI: Record<string, PanduanRegulasi> = {
       "4. Pengajuan mandiri melalui program SEHATI (Sertifikasi Halal Gratis).",
     ],
   },
-  "pirt": {
+  pirt: {
     slug: "pirt",
     judul: "Panduan Pengurusan Izin Edar P-IRT",
     kategori: "Legalitas Pangan",
@@ -31,7 +31,7 @@ export const DATA_REGULASI: Record<string, PanduanRegulasi> = {
       "4. Pencantuman nomor registrasi P-IRT dan tanggal kedaluwarsa pada kemasan.",
     ],
   },
-  "higiene": {
+  higiene: {
     slug: "higiene",
     judul: "Standar Higiene & Sanitasi Dapur Kuliner",
     kategori: "Operasional Dapur",
