@@ -134,20 +134,20 @@ export default function DetailAuditScreen() {
       contentContainerStyle={[styles.content, { paddingTop: topPadding }]}
       showsVerticalScrollIndicator={false}
     >
-      <Pressable
-        style={styles.backButton}
-        onPress={handleKembali}
-        hitSlop={{ top: 14, bottom: 14, left: 14, right: 14 }}
-      >
-        <Ionicons name="arrow-back" size={18} color="#28735F" />
-        <Text style={styles.backText}>Kembali ke Dashboard</Text>
-      </Pressable>
-
-      <Image
-        source={{ uri: gerai.fotoUrl }}
-        style={styles.bannerImage}
-        resizeMode="cover"
-      />
+      <View style={styles.bannerContainer}>
+        <Image
+          source={{ uri: gerai.fotoUrl }}
+          style={styles.bannerImage}
+          resizeMode="cover"
+        />
+        <Pressable
+          style={styles.floatingBackButton}
+          onPress={handleKembali}
+          hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
+        >
+          <Ionicons name="arrow-back" size={20} color="#28735F" />
+        </Pressable>
+      </View>
 
       <View style={styles.card}>
         <View style={styles.rowBetween}>
@@ -198,7 +198,7 @@ export default function DetailAuditScreen() {
       {(activeTab === "menu" || activeTab === "semua") && (
         <View style={styles.card}>
           <View style={styles.sectionHeaderRow}>
-            <Text style={styles.sectionHeader}>🍽️ Menu Populer (TheMealDB API)</Text>
+            <Text style={styles.sectionHeader}>🍽️ Menu Populer</Text>
             <Text style={styles.sectionSubtitle}>{menuList.length} Menu Pilihan</Text>
           </View>
 
