@@ -31,6 +31,129 @@ const KATEGORI_KULINER_LIST: KategoriKuliner[] = [
   "Katering",
 ];
 
+interface SearchHeaderProps {
+  searchQuery: string;
+  setSearchQuery: (q: string) => void;
+  selectedCategory: KategoriKuliner;
+  setSelectedCategory: (cat: KategoriKuliner) => void;
+  filteredCount: number;
+  totalCount: number;
+  onOpenSop: () => void;
+  onOpenTeam: () => void;
+  onOpenLogin: () => void;
+}
+
+function SearchHeader({
+  searchQuery,
+  setSearchQuery,
+  selectedCategory,
+  setSelectedCategory,
+  filteredCount,
+  totalCount,
+  onOpenSop,
+  onOpenTeam,
+  onOpenLogin,
+}: SearchHeaderProps) {
+  return (
+    <View>
+      <View style={styles.headerContainer}>
+        <View style={styles.headerTopRow}>
+          <View style={styles.headerBadge}>
+            <Text style={styles.headerBadgeText}>petaRasa</Text>
+          </View>
+
+          <View style={styles.authButtonsRow}>
+            <Pressable style={styles.authBtn} onPress={onOpenSop}>
+              <Ionicons name="book-outline" size={14} color="#ffffff" />
+              <Text style={styles.authBtnText}>SOP</Text>
+            </Pressable>
+
+            <Pressable style={styles.authBtn} onPress={onOpenTeam}>
+              <Ionicons name="people-outline" size={14} color="#ffffff" />
+              <Text style={styles.authBtnText}>Tim</Text>
+            </Pressable>
+
+            <Pressable style={styles.authBtn} onPress={onOpenLogin}>
+              <Ionicons name="log-in-outline" size={14} color="#ffffff" />
+              <Text style={styles.authBtnText}>Login</Text>
+            </Pressable>
+          </View>
+        </View>
+
+        <Text style={styles.headerTitle}>petaRasa</Text>
+        <Text style={styles.headerSubtitle}>
+          Petunjuk Pasti Kuliner Pilihan.
+        </Text>
+      </View>
+
+      <View style={styles.searchWrapper}>
+        <Ionicons name="search" size={18} color="#74787C" />
+        <TextInput
+          placeholder="Cari kedai, produk kuliner, atau kota..."
+          placeholderTextColor="#9DA1A5"
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          style={styles.searchInput}
+          autoCorrect={false}
+          autoCapitalize="none"
+        />
+        {searchQuery.length > 0 && (
+          <Pressable onPress={() => setSearchQuery("")}>
+            <Ionicons name="close-circle" size={18} color="#74787C" />
+          </Pressable>
+        )}
+      </View>
+
+      <ScrollView
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        style={styles.categoryScroll}
+      >
+        {KATEGORI_KULINER_LIST.map((item) => {
+          const isSelected = selectedCategory === item;
+          return (
+            <Pressable
+              key={item}
+              onPress={() => setSelectedCategory(item)}
+              style={[
+                styles.categoryChip,
+                isSelected && { backgroundColor: "#52B79B" },
+              ]}
+            >
+              <Text
+                style={[
+                  styles.categoryChipText,
+                  isSelected && { color: "#ffffff" },
+                ]}
+              >
+                {item}
+              </Text>
+            </Pressable>
+          );
+        })}
+      </ScrollView>
+
+      <View style={styles.sectionTitleRow}>
+        <Text style={styles.sectionTitle}>Daftar Hasil Audit Kuliner</Text>
+        <Text style={styles.sectionCount}>
+          Menampilkan {filteredCount} dari {totalCount} gerai
+        </Text>
+      </View>
+    </View>
+  );
+}
+
+function ListFooter() {
+  return (
+    <View style={styles.footerBox}>
+      <Text style={styles.footerText}>Praktikum Pemrograman Mobile</Text>
+      <Text style={styles.footerSubtext}>
+        Laboratorium Informatika • Universitas Muhammadiyah Malang
+      </Text>
+    </View>
+  );
+}
+
 export default function Index() {
   const router = useRouter();
 
@@ -75,10 +198,6 @@ export default function Index() {
     setFilteredUMKM(hasil);
   }, [searchQuery, selectedCategory, allUMKM]);
 
-  function formatRupiah(nominal: number): string {
-    return "Rp " + nominal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-  }
-
   function getStatusBadge(skor: number) {
     if (skor >= 85) {
       return {
@@ -115,33 +234,15 @@ export default function Index() {
     }
   }
 
-  function hitungRingkasan(list: UMKMKulinerData[]): RingkasanStatistikKuliner {
-    if (list.length === 0) {
-      return { totalUMKM: 0, rataRataSkor: 0, jumlahLayak: 0 };
-    }
-    const totalSkor = list.reduce((total, item) => total + item.skorTotal, 0);
-    const layakCount = list.filter((item) => item.skorTotal >= 70).length;
-
-    return {
-      totalUMKM: list.length,
-      rataRataSkor: Math.round(totalSkor / list.length),
-      jumlahLayak: layakCount,
-    };
-  }
-
   const renderUMKMCard = ({ item }: { item: UMKMKulinerData }) => {
     const status = getStatusBadge(item.skorTotal);
 
     return (
       <Pressable
         style={styles.card}
-        onPress={() => router.push(`/umkm/${item.id}` as any)}
+        onPress={() => router.push(`/umkm/${item.id}`)}
       >
-        <Image
-          source={{ uri: item.fotoUrl }}
-          style={styles.cardImage}
-          resizeMode="cover"
-        />
+        <Image source={{ uri: item.fotoUrl }} style={styles.cardImage} />
 
         <View style={styles.cardBody}>
           <View style={styles.cardHeaderRow}>
@@ -175,123 +276,32 @@ export default function Index() {
     );
   };
 
-  const renderHeader = () => (
-    <View>
-      <View style={styles.headerContainer}>
-        <View style={styles.headerTopRow}>
-          <View style={styles.headerBadge}>
-            <Text style={styles.headerBadgeText}>petaRasa</Text>
-          </View>
-
-          <View style={styles.authButtonsRow}>
-            <Pressable
-              style={styles.authBtn}
-              onPress={() => router.push("/docs/halal")}
-            >
-              <Ionicons name="book-outline" size={14} color="#ffffff" />
-              <Text style={styles.authBtnText}>SOP</Text>
-            </Pressable>
-
-            <Pressable
-              style={styles.authBtn}
-              onPress={() => router.push("/about")}
-            >
-              <Ionicons name="people-outline" size={14} color="#ffffff" />
-              <Text style={styles.authBtnText}>Tim</Text>
-            </Pressable>
-
-            <Pressable
-              style={styles.authBtn}
-              onPress={() =>
-                Alert.alert(
-                  "Masuk Akun",
-                  "Fitur login sedang disiapkan sesuai alur autentikasi kelompok."
-                )
-              }
-            >
-              <Ionicons name="log-in-outline" size={14} color="#ffffff" />
-              <Text style={styles.authBtnText}>Login</Text>
-            </Pressable>
-          </View>
-        </View>
-
-        <Text style={styles.headerTitle}>petaRasa</Text>
-        <Text style={styles.headerSubtitle}>
-          Petunjuk Pasti Kuliner Pilihan.
-        </Text>
-      </View>
-
-      <View style={styles.searchWrapper}>
-        <Ionicons name="search" size={18} color="#74787C" />
-        <TextInput
-          placeholder="Cari kedai, produk kuliner, atau kota..."
-          placeholderTextColor="#9DA1A5"
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          style={styles.searchInput}
-        />
-        {searchQuery.length > 0 && (
-          <Pressable onPress={() => setSearchQuery("")}>
-            <Ionicons name="close-circle" size={18} color="#74787C" />
-          </Pressable>
-        )}
-      </View>
-
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.categoryScroll}
-      >
-        {KATEGORI_KULINER_LIST.map((item) => {
-          const isSelected = selectedCategory === item;
-          return (
-            <Pressable
-              key={item}
-              onPress={() => setSelectedCategory(item)}
-              style={[
-                styles.categoryChip,
-                isSelected && { backgroundColor: "#52B79B" },
-              ]}
-            >
-              <Text
-                style={[
-                  styles.categoryChipText,
-                  isSelected && { color: "#ffffff" },
-                ]}
-              >
-                {item}
-              </Text>
-            </Pressable>
-          );
-        })}
-      </ScrollView>
-
-      <View style={styles.sectionTitleRow}>
-        <Text style={styles.sectionTitle}>Daftar Hasil Audit Kuliner</Text>
-        <Text style={styles.sectionCount}>
-          Menampilkan {filteredUMKM.length} dari {allUMKM.length} gerai
-        </Text>
-      </View>
-    </View>
-  );
-
-  const renderFooter = () => (
-    <View style={styles.footerBox}>
-      <Text style={styles.footerText}>Praktikum Pemrograman Mobile</Text>
-      <Text style={styles.footerSubtext}>
-        Laboratorium Informatika • Universitas Muhammadiyah Malang
-      </Text>
-    </View>
-  );
-
   return (
     <View style={styles.container}>
       <FlatList
         data={filteredUMKM}
         keyExtractor={(item) => item.id}
         renderItem={renderUMKMCard}
-        ListHeaderComponent={renderHeader}
-        ListFooterComponent={renderFooter}
+        keyboardShouldPersistTaps="handled"
+        ListHeaderComponent={
+          <SearchHeader
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+            filteredCount={filteredUMKM.length}
+            totalCount={allUMKM.length}
+            onOpenSop={() => router.push("/docs/halal")}
+            onOpenTeam={() => router.push("/about")}
+            onOpenLogin={() =>
+              Alert.alert(
+                "Masuk Akun",
+                "Fitur login sedang disiapkan sesuai alur autentikasi kelompok."
+              )
+            }
+          />
+        }
+        ListFooterComponent={<ListFooter />}
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
         refreshing={isRefreshing}
