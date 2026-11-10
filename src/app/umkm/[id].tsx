@@ -35,25 +35,28 @@ export default function DetailAuditScreen() {
   const activeTab = tab || "menu";
 
   useEffect(() => {
-    async function loadData() {
+    function loadData() {
       if (!id) return;
       setIsLoading(true);
       setErrorMessage(null);
-      try {
-        const place = await getUMKMById(id);
-        const reviews = await getUlasanByGeraiId(id);
-        if (place) {
-          setGerai(place);
-        } else {
-          setErrorMessage("Data gerai tidak ditemukan pada respon API.");
-        }
-        setUlasanList(reviews);
-      } catch (err: any) {
-        console.error("Gagal memuat detail gerai:", err);
-        setErrorMessage(err.message || "Gagal menghubungi API eksternal.");
-      } finally {
-        setIsLoading(false);
-      }
+
+      // Mengambil detail gerai & ulasan secara paralel dengan Promise.all() dan .then()
+      Promise.all([getUMKMById(id), getUlasanByGeraiId(id)])
+        .then(([place, reviews]) => {
+          if (place) {
+            setGerai(place);
+          } else {
+            setErrorMessage("Data gerai tidak ditemukan pada respon API.");
+          }
+          setUlasanList(reviews);
+        })
+        .catch((err: any) => {
+          console.error("Gagal memuat detail gerai:", err);
+          setErrorMessage(err.message || "Gagal menghubungi API eksternal.");
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
     }
     loadData();
   }, [id]);
