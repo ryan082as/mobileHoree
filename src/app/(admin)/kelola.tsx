@@ -16,18 +16,21 @@ export default function KelolaUMKMAdminScreen() {
     loadData();
   }, []);
 
-  async function loadData() {
+  function loadData() {
     setIsLoading(true);
     setErrorMessage(null);
-    try {
-      const list = await getDaftarUMKM();
-      setDataList(list);
-    } catch (err: any) {
-      console.error(err);
-      setErrorMessage(err.message || "Gagal memuat data dari API eksternal.");
-    } finally {
-      setIsLoading(false);
-    }
+
+    getDaftarUMKM()
+      .then((list) => {
+        setDataList(list);
+      })
+      .catch((err: any) => {
+        console.error(err);
+        setErrorMessage(err.message || "Gagal memuat data dari API eksternal.");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }
 
   const handleHapus = (item: UMKMKulinerData) => {

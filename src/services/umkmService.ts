@@ -106,25 +106,24 @@ function generateUlasanForPlaces(places: UMKMKulinerData[]) {
   cachedUlasanList = reviews;
 }
 
-export async function fetchAllUMKMFromAPI(): Promise<UMKMKulinerData[]> {
-  const [places, mealsPool] = await Promise.all([
+export function fetchAllUMKMFromAPI(): Promise<UMKMKulinerData[]> {
+  return Promise.all([
     fetchOverpassPlaces(),
     fetchPopularMealsPool(),
-  ]);
+  ]).then(([places, mealsPool]) => {
+    if (!places || places.length === 0) {
+      return Promise.reject(new Error("Tidak ada data gerai kuliner yang ditemukan dari OpenStreetMap API."));
+    }
 
-  if (!places || places.length === 0) {
-    throw new Error("Tidak ada data gerai kuliner yang ditemukan dari OpenStreetMap API.");
-  }
-
-  const result = buildUMKMList(places, mealsPool);
-  cachedUMKMList = result;
-  generateUlasanForPlaces(result);
-  return result;
+    const result = buildUMKMList(places, mealsPool);
+    cachedUMKMList = result;
+    generateUlasanForPlaces(result);
+    return Promise.resolve(result);
+  });
 }
 
-export async function getDaftarUMKM(): Promise<UMKMKulinerData[]> {
+export function getDaftarUMKM(): Promise<UMKMKulinerData[]> {
   if (cachedUMKMList.length > 0) {
-    // Memenuhi kriteria Pre-built Async: Promise.resolve()
     return Promise.resolve(cachedUMKMList);
   }
   return fetchAllUMKMFromAPI();
@@ -160,10 +159,11 @@ export function getUMKMById(id: string): Promise<UMKMKulinerData> {
   });
 }
 
-export async function getUlasanByGeraiId(geraiId: string): Promise<UlasanKuliner[]> {
-  return cachedUlasanList.filter((item) => item.geraiId === geraiId);
+export function getUlasanByGeraiId(geraiId: string): Promise<UlasanKuliner[]> {
+  return Promise.resolve(cachedUlasanList.filter((item) => item.geraiId === geraiId));
 }
 
-export async function deleteUMKMLokal(id: string): Promise<void> {
+export function deleteUMKMLokal(id: string): Promise<void> {
   cachedUMKMList = cachedUMKMList.filter((item) => item.id !== id);
+  return Promise.resolve();
 }

@@ -49,40 +49,47 @@ function getShortMealDescription(name: string): string {
   return "Hidangan ayam pilihan lezat dengan paduan bumbu rempah autentik.";
 }
 
-export async function fetchPopularMealsPool(): Promise<MenuPopulerItem[]> {
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 12000);
+export function fetchPopularMealsPool(): Promise<MenuPopulerItem[]> {
+  return new Promise((resolve, reject) => {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 12000);
 
-  try {
-    const res = await fetch("https://www.themealdb.com/api/json/v1/1/filter.php?c=Chicken", {
+    fetch("https://www.themealdb.com/api/json/v1/1/filter.php?c=Chicken", {
       signal: controller.signal,
-    });
+    })
+      .then((res) => {
+        clearTimeout(timeoutId);
+        if (!res.ok) {
+          reject(new Error(`TheMealDB API gagal merespons (Status: ${res.status} ${res.statusText})`));
+          return null;
+        }
+        return res.json();
+      })
+      .then((data) => {
+        if (!data) return;
+        if (!data.meals || !Array.isArray(data.meals) || data.meals.length === 0) {
+          reject(new Error("Tidak ada data menu makanan dari TheMealDB API."));
+          return;
+        }
 
-    if (!res.ok) {
-      throw new Error(`TheMealDB API gagal merespons (Status: ${res.status} ${res.statusText})`);
-    }
+        const meals: MenuPopulerItem[] = data.meals.slice(0, 15).map((meal: MealDBItem, index: number) => ({
+          id: `meal-${meal.idMeal}`,
+          nama: meal.strMeal,
+          deskripsi: getShortMealDescription(meal.strMeal),
+          harga: 18000 + ((parseInt(meal.idMeal, 10) || index) % 12) * 1000,
+          isFavorit: index % 2 === 0,
+          fotoUrl: meal.strMealThumb,
+        }));
 
-    const data = await res.json();
-    if (!data.meals || !Array.isArray(data.meals) || data.meals.length === 0) {
-      throw new Error("Tidak ada data menu makanan dari TheMealDB API.");
-    }
-
-    const meals: MenuPopulerItem[] = data.meals.slice(0, 15).map((meal: MealDBItem, index: number) => ({
-      id: `meal-${meal.idMeal}`,
-      nama: meal.strMeal,
-      deskripsi: getShortMealDescription(meal.strMeal),
-      harga: 18000 + ((parseInt(meal.idMeal, 10) || index) % 12) * 1000,
-      isFavorit: index % 2 === 0,
-      fotoUrl: meal.strMealThumb,
-    }));
-
-    return meals;
-  } catch (error: any) {
-    if (error.name === "AbortError") {
-      throw new Error("Koneksi ke TheMealDB API timeout (lebih dari 12 detik).");
-    }
-    throw error;
-  } finally {
-    clearTimeout(timeoutId);
-  }
+        resolve(meals);
+      })
+      .catch((error: any) => {
+        clearTimeout(timeoutId);
+        if (error.name === "AbortError") {
+          reject(new Error("Koneksi ke TheMealDB API timeout (lebih dari 12 detik)."));
+        } else {
+          reject(error);
+        }
+      });
+  });
 }
