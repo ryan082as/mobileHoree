@@ -12,10 +12,11 @@ export const styles = StyleSheet.create({
     width: "100%",
     alignSelf: "center",
   },
+  // Top App Bar
   headerContainer: {
-    backgroundColor: "#1E6B56",
+    backgroundColor: "#74787C",
     paddingTop: 16,
-    paddingBottom: 16,
+    paddingBottom: 20,
     paddingHorizontal: 16,
     borderRadius: 16,
     marginBottom: 16,
@@ -29,22 +30,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-  },
-  logoCard: {
-    backgroundColor: "#ffffff",
-    borderRadius: 12,
-    padding: 6,
-    alignItems: "center",
-    justifyContent: "center",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
-    elevation: 2,
-  },
-  logoImage: {
-    width: 92,
-    height: 76,
+    marginBottom: 8,
   },
   headerBadge: {
     backgroundColor: "#52B79B",
@@ -89,6 +75,7 @@ export const styles = StyleSheet.create({
     marginTop: 2,
   },
 
+  // KPI Summary Cards
   statsContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -123,6 +110,7 @@ export const styles = StyleSheet.create({
     textAlign: "center",
   },
 
+  // Search & Filter Section
   searchWrapper: {
     flexDirection: "row",
     alignItems: "center",
@@ -163,6 +151,7 @@ export const styles = StyleSheet.create({
     color: "#ffffff",
   },
 
+  // Section Header
   sectionTitleRow: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -179,6 +168,7 @@ export const styles = StyleSheet.create({
     color: "#74787C",
   },
 
+  // UMKM Card Styling
   card: {
     backgroundColor: "#ffffff",
     borderRadius: 14,
@@ -254,6 +244,7 @@ export const styles = StyleSheet.create({
     marginLeft: 4,
   },
 
+  // Score Bar Row
   scoreRow: {
     backgroundColor: "#F4F4F4",
     padding: 10,
@@ -293,6 +284,7 @@ export const styles = StyleSheet.create({
     borderRadius: 3,
   },
 
+  // Info Metrics Grid
   metricsGrid: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -315,6 +307,7 @@ export const styles = StyleSheet.create({
     color: "#2C3033",
   },
 
+  // Compliance Pill List
   complianceRow: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -336,6 +329,7 @@ export const styles = StyleSheet.create({
     color: "#74787C",
   },
 
+  // Recommendation Box
   recommendationBox: {
     backgroundColor: "#EEF9F5",
     borderColor: "#C1EBDE",
@@ -350,6 +344,7 @@ export const styles = StyleSheet.create({
     lineHeight: 18,
   },
 
+  // Action Buttons inside Card
   cardActionRow: {
     flexDirection: "row",
     justifyContent: "flex-end",
@@ -370,6 +365,7 @@ export const styles = StyleSheet.create({
     marginRight: 4,
   },
 
+  // Simulation Panel
   simulationBox: {
     backgroundColor: "#ffffff",
     borderRadius: 14,
@@ -426,6 +422,7 @@ export const styles = StyleSheet.create({
     fontWeight: "600",
   },
 
+  // Footer Team Member Credits
   footerBox: {
     alignItems: "center",
     paddingVertical: 16,

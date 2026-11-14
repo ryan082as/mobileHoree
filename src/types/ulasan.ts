@@ -12,7 +12,7 @@ export interface UlasanKuliner {
   geraiId: string;
   emailPengulas: string;
   namaPengulas: string;
-  ratingBintang: number;
+  ratingBintang: number; // Skala 1 s.d. 5
   isiUlasan: string;
   tanggalUlasan: string;
   threadBalasan: PesanThread[];

@@ -1,8 +1,12 @@
 import { UserAccount, UserRole } from "@/types/user";
 
-
+/**
+ * Service Autentikasi: Mendukung pendaftaran dengan akun Gmail dan sandi manual
+ */
 export const authService = {
-  
+  /**
+   * Simulasi Login dengan Email Gmail & Sandi Manual
+   */
   async login(email: string, passwordManual: string): Promise<UserAccount> {
     if (!email.toLowerCase().endsWith("@gmail.com")) {
       throw new Error("Pendaftaran wajib menggunakan akun berekstensi @gmail.com");
@@ -22,7 +26,9 @@ export const authService = {
     };
   },
 
-  
+  /**
+   * Simulasi Registrasi Akun Baru
+   */
   async register(
     email: string,
     passwordManual: string,
@@ -43,8 +49,11 @@ export const authService = {
     };
   },
 
-  
+  /**
+   * Aksi Logout: Menghapus session pengguna
+   */
   async logout(): Promise<void> {
+    // Logika menghapus token/session di memori atau AsyncStorage
     return Promise.resolve();
   },
 };
