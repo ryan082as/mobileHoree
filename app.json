@@ -8,7 +8,11 @@
     "scheme": "petarasa",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "icon": "./assets/expo.icon",
+      "associatedDomains": [
+        "applinks:petarasa.id",
+        "applinks:www.petarasa.id"
+      ]
     },
     "android": {
       "adaptiveIcon": {
@@ -18,7 +22,49 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "package": "com.ryan082s.apakahinimy"
+      "package": "com.ryan082s.apakahinimy",
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "petarasa.id",
+              "pathPrefix": "/docs"
+            },
+            {
+              "scheme": "https",
+              "host": "petarasa.id",
+              "pathPrefix": "/about"
+            },
+            {
+              "scheme": "https",
+              "host": "petarasa.id",
+              "pathPrefix": "/sop"
+            },
+            {
+              "scheme": "https",
+              "host": "petarasa.id",
+              "pathPrefix": "/tim"
+            },
+            {
+              "scheme": "https",
+              "host": "www.petarasa.id",
+              "pathPrefix": "/docs"
+            },
+            {
+              "scheme": "https",
+              "host": "www.petarasa.id",
+              "pathPrefix": "/about"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ]
     },
     "web": {
       "output": "static",

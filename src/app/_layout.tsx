@@ -1,10 +1,15 @@
 import React from 'react';
 import { Stack } from 'expo-router';
 
+export const unstable_settings = {
+  anchor: 'index',
+};
+
 // Kriteria Modul 2: Penerapan _layout.tsx dan <Stack.Screen> (Hal 30-31, 40, 43)
 export default function RootLayout() {
   return (
     <Stack
+      initialRouteName="index"
       screenOptions={{
         headerStyle: {
           backgroundColor: '#1E6B56', // Hijau toska gelap (sebelumnya #74787C abu-abu)
@@ -50,6 +55,15 @@ export default function RootLayout() {
         name="about"
         options={{
           title: 'Profil Tim Pengembang',
+          headerBackTitle: 'Beranda',
+        }}
+      />
+
+      {/* Fallback Deeplink Tidak Ditemukan (+not-found.tsx) */}
+      <Stack.Screen
+        name="+not-found"
+        options={{
+          title: 'Halaman Tidak Ditemukan',
           headerBackTitle: 'Beranda',
         }}
       />
