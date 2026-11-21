@@ -1,4 +1,4 @@
-export type UserRole = 'pemilik_umkm' | 'asesor_admin';
+export type UserRole = 'pengguna' | 'pemilik_umkm' | 'asesor_admin';
 
 export interface UserAccount {
   id: string;

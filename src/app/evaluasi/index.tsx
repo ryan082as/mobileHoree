@@ -1,77 +1,46 @@
-import React, { useState } from "react";
-import { View, Text, TextInput, ScrollView, Pressable, Alert } from "react-native";
+import React from "react";
+import { Pressable, ScrollView, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { styles } from "@/styles/evaluasiStyles";
 
+/**
+ * Halaman informasi bahwa pendaftaran & perubahan profil/skor gerai UMKM
+ * dikelola penuh oleh Admin petaRasa melalui database Supabase.
+ */
 export default function EvaluasiMandiriScreen() {
   const router = useRouter();
 
-  const [namaUsaha, setNamaUsaha] = useState("");
-  const [omzet, setOmzet] = useState("");
-  const [porsi, setPorsi] = useState("");
-
-  const handleSubmit = () => {
-    if (!namaUsaha || !omzet) {
-      Alert.alert("Perhatian", "Mohon isi nama usaha dan omzet bulanan!");
-      return;
-    }
-
-    Alert.alert(
-      "Audit Tersimpan",
-      `Penilaian untuk ${namaUsaha} berhasil dihitung dan dicatat!`,
-      [
-        {
-          text: "Kembali ke Beranda",
-          onPress: () => router.replace("/"),
-        },
-      ]
-    );
-  };
-
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      <Pressable style={styles.backRow} onPress={() => router.back()}>
-        <Ionicons name="arrow-back" size={20} color="#52B79B" />
-        <Text style={styles.backText}>Batal & Kembali</Text>
-      </Pressable>
-
-      <View style={styles.card}>
-        <Text style={styles.title}>📝 Form Penilaian Usaha Kuliner Baru</Text>
-        <Text style={styles.desc}>
-          Isi indikator berikut untuk menguji kelayakan sertifikasi dan permodalan.
-        </Text>
-
-        <Text style={styles.label}>Nama Gerai / Usaha Kuliner</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Contoh: Kedai Bakso Mas Bro"
-          value={namaUsaha}
-          onChangeText={setNamaUsaha}
-        />
-
-        <Text style={styles.label}>Rata-rata Omzet Bulanan (Rp)</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Contoh: 15000000"
-          keyboardType="numeric"
-          value={omzet}
-          onChangeText={setOmzet}
-        />
-
-        <Text style={styles.label}>Kapasitas Porsi per Hari</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Contoh: 100"
-          keyboardType="numeric"
-          value={porsi}
-          onChangeText={setPorsi}
-        />
-
-        <Pressable style={styles.submitBtn} onPress={handleSubmit}>
-          <Text style={styles.submitBtnText}>Simpan & Terbitkan Hasil Audit</Text>
+    <SafeAreaView style={styles.container} edges={["top"]}>
+      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+        <Pressable style={styles.backRow} onPress={() => router.back()}>
+          <Ionicons name="arrow-back" size={20} color="#52B79B" />
+          <Text style={styles.backText}>Kembali ke Dashboard</Text>
         </Pressable>
-      </View>
-    </ScrollView>
+
+        <View style={styles.card}>
+          <View style={{ alignItems: "center", marginBottom: 12 }}>
+            <Ionicons name="lock-closed" size={38} color="#1E6B56" />
+          </View>
+          <Text style={[styles.title, { textAlign: "center" }]}>
+            Pendaftaran & Info Gerai Dikelola Admin
+          </Text>
+          <Text style={[styles.desc, { textAlign: "center", lineHeight: 19, marginTop: 8 }]}>
+            Untuk menjaga keaslian profil usaha, foto, kategori, lokasi, dan penilaian audit,
+            data gerai UMKM tidak dapat dibuat atau diubah langsung melalui aplikasi.
+          </Text>
+          <Text style={[styles.desc, { textAlign: "center", lineHeight: 19, marginBottom: 18 }]}>
+            Pemilik UMKM dapat menghubungi Admin petaRasa agar akunnya disiapkan dan dihubungkan
+            ke toko di database, kemudian cukup login untuk mengelola daftar menu.
+          </Text>
+
+          <Pressable style={styles.submitBtn} onPress={() => router.replace("/")}>
+            <Text style={styles.submitBtnText}>Kembali ke Beranda</Text>
+          </Pressable>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }

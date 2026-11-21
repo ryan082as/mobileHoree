@@ -10,6 +10,7 @@ export interface PesanThread {
 export interface UlasanKuliner {
   id: string;
   geraiId: string;
+  userId?: string;
   emailPengulas: string;
   namaPengulas: string;
   ratingBintang: number;

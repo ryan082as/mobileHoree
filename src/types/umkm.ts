@@ -27,6 +27,8 @@ export interface MenuPopulerItem {
 
 export interface UMKMKulinerData {
   id: string;
+  userId?: string;
+  isSeed?: boolean;
   namaUsaha: string;
   namaPemilik: string;
   kategori: Exclude<KategoriKuliner, 'Semua'>;

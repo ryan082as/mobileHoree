@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import {
   ActivityIndicator,
-  Alert,
   FlatList,
   Image,
   Pressable,
@@ -10,15 +9,14 @@ import {
   TextInput,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
 
-import {
-  KategoriKuliner,
-  RingkasanStatistikKuliner,
-  UMKMKulinerData,
-} from "@/types/umkm";
-import { getDaftarUMKM, fetchAllUMKMFromAPI } from "@/services/umkmService";
+import { KategoriKuliner, UMKMKulinerData } from "@/types/umkm";
+import { getDaftarUMKM, getUMKMMilikUser } from "@/services/umkmService";
+import { runInitialMigration } from "@/database/migration/seedData";
+import { useAuth } from "@/context/AuthContext";
 import { styles } from "@/styles/umkmStyles";
 
 const KATEGORI_KULINER_LIST: KategoriKuliner[] = [
@@ -38,9 +36,12 @@ interface SearchHeaderProps {
   setSelectedCategory: (cat: KategoriKuliner) => void;
   filteredCount: number;
   totalCount: number;
+  displayUserName: string;
+  isStoreOwner: boolean;
   onOpenSop: () => void;
   onOpenTeam: () => void;
-  onOpenLogin: () => void;
+  onOpenKelola: () => void;
+  onOpenProfil: () => void;
 }
 
 function SearchHeader({
@@ -50,9 +51,12 @@ function SearchHeader({
   setSelectedCategory,
   filteredCount,
   totalCount,
+  displayUserName,
+  isStoreOwner,
   onOpenSop,
   onOpenTeam,
-  onOpenLogin,
+  onOpenKelola,
+  onOpenProfil,
 }: SearchHeaderProps) {
   return (
     <View>
@@ -77,11 +81,47 @@ function SearchHeader({
               <Text style={styles.authBtnText}>Tim</Text>
             </Pressable>
 
-            <Pressable style={styles.authBtn} onPress={onOpenLogin}>
-              <Ionicons name="log-in-outline" size={14} color="#ffffff" />
-              <Text style={styles.authBtnText}>Login</Text>
+            {isStoreOwner && (
+              <Pressable style={styles.authBtn} onPress={onOpenKelola}>
+                <Ionicons name="storefront-outline" size={14} color="#ffffff" />
+                <Text style={styles.authBtnText}>Toko</Text>
+              </Pressable>
+            )}
+
+            <Pressable style={styles.authBtn} onPress={onOpenProfil}>
+              <Ionicons name="person-circle-outline" size={14} color="#ffffff" />
+              <Text style={styles.authBtnText}>Profil</Text>
             </Pressable>
           </View>
+        </View>
+
+        <View style={styles.userSessionBar}>
+          <View style={styles.userSessionLeft}>
+            <Ionicons name="checkmark-circle" size={14} color="#6EE7B7" />
+            <Text style={styles.userSessionText} numberOfLines={1}>
+              Halo, {displayUserName}
+            </Text>
+          </View>
+
+          {isStoreOwner ? (
+            <Pressable style={styles.addAuditBtn} onPress={onOpenKelola}>
+              <Ionicons name="briefcase-outline" size={13} color="#ffffff" />
+              <Text style={styles.addAuditBtnText}>Pemilik UMKM</Text>
+            </Pressable>
+          ) : (
+            <View
+              style={{
+                backgroundColor: "rgba(255, 255, 255, 0.16)",
+                paddingHorizontal: 10,
+                paddingVertical: 4,
+                borderRadius: 8,
+              }}
+            >
+              <Text style={{ color: "#E2F4EE", fontSize: 11, fontWeight: "600" }}>
+                Pengunjung
+              </Text>
+            </View>
+          )}
         </View>
       </View>
 
@@ -155,40 +195,51 @@ function ListFooter() {
 
 export default function Index() {
   const router = useRouter();
+  const { user } = useAuth();
 
   const [allUMKM, setAllUMKM] = useState<UMKMKulinerData[]>([]);
+  const [isStoreOwner, setIsStoreOwner] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<KategoriKuliner>("Semua");
   const [filteredUMKM, setFilteredUMKM] = useState<UMKMKulinerData[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const hasLoadedRef = useRef(false);
 
-  useEffect(() => {
-    loadData();
-  }, []);
+  const loadData = useCallback(
+    async (backgroundRefresh = false) => {
+      if (backgroundRefresh) setIsRefreshing(true);
+      else setIsLoading(true);
+      setErrorMessage(null);
 
-  function loadData(forceRefresh = false) {
-    if (forceRefresh) setIsRefreshing(true);
-    else setIsLoading(true);
-    setErrorMessage(null);
-
-    const apiPromise = forceRefresh ? fetchAllUMKMFromAPI() : getDaftarUMKM();
-
-    // Memenuhi Kriteria Penilaian Modul 3: Menggunakan .then(), .catch(), dan .finally()
-    apiPromise
-      .then((data: UMKMKulinerData[]) => {
+      try {
+        if (user?.id) {
+          await runInitialMigration(user.id);
+        }
+        const [data, ownedStores] = await Promise.all([
+          getDaftarUMKM(),
+          user?.id ? getUMKMMilikUser(user.id) : Promise.resolve([]),
+        ]);
         setAllUMKM(data);
-      })
-      .catch((err: any) => {
-        console.error("Gagal memuat data API:", err);
-        setErrorMessage(err.message || "Gagal menghubungi server API eksternal.");
-      })
-      .finally(() => {
+        setIsStoreOwner(ownedStores.length > 0);
+        hasLoadedRef.current = true;
+      } catch (err: any) {
+        console.error("Gagal memuat data Supabase:", err);
+        setErrorMessage(err?.message || "Gagal menghubungi database Supabase.");
+      } finally {
         setIsLoading(false);
         setIsRefreshing(false);
-      });
-  }
+      }
+    },
+    [user?.id]
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      loadData(hasLoadedRef.current);
+    }, [loadData])
+  );
 
   useEffect(() => {
     const hasil = allUMKM.filter((item) => {
@@ -209,35 +260,32 @@ export default function Index() {
         label: "Sangat Layak",
         bgBadge: "#EEF9F5",
         textBadge: "#28735F",
-        barColor: "#52B79B",
-        icon: "checkmark-done-circle" as const,
       };
     } else if (skor >= 70) {
       return {
         label: "Cukup Layak",
         bgBadge: "#F0F2F3",
         textBadge: "#53585C",
-        barColor: "#74787C",
-        icon: "checkmark-circle" as const,
       };
     } else if (skor >= 55) {
       return {
         label: "Perlu Pembinaan",
         bgBadge: "#fef3c7",
         textBadge: "#b45309",
-        barColor: "#f59e0b",
-        icon: "alert-circle" as const,
       };
     } else {
       return {
         label: "Risiko Tinggi",
         bgBadge: "#fee2e2",
         textBadge: "#b91c1c",
-        barColor: "#ef4444",
-        icon: "close-circle" as const,
       };
     }
   }
+
+  const displayUserName =
+    user?.user_metadata?.nama_lengkap ||
+    user?.email?.split("@")[0] ||
+    "Pengguna";
 
   const renderUMKMCard = ({ item }: { item: UMKMKulinerData }) => {
     const status = getStatusBadge(item.skorTotal);
@@ -247,7 +295,10 @@ export default function Index() {
         style={styles.card}
         onPress={() => router.push(`/umkm/${item.id}`)}
       >
-        <Image source={{ uri: item.fotoUrl }} style={styles.cardImage} />
+        <Image
+          source={item.fotoLocal ? item.fotoLocal : { uri: item.fotoUrl }}
+          style={styles.cardImage}
+        />
 
         <View style={styles.cardBody}>
           <View style={styles.cardHeaderRow}>
@@ -282,7 +333,7 @@ export default function Index() {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={["top"]}>
       <FlatList
         data={filteredUMKM}
         keyExtractor={(item) => item.id}
@@ -296,14 +347,12 @@ export default function Index() {
             setSelectedCategory={setSelectedCategory}
             filteredCount={filteredUMKM.length}
             totalCount={allUMKM.length}
+            displayUserName={displayUserName}
+            isStoreOwner={isStoreOwner}
             onOpenSop={() => router.push("/docs/halal")}
             onOpenTeam={() => router.push("/about")}
-            onOpenLogin={() =>
-              Alert.alert(
-                "Masuk Akun",
-                "Fitur login sedang disiapkan sesuai alur autentikasi kelompok."
-              )
-            }
+            onOpenKelola={() => router.push("/(admin)/kelola")}
+            onOpenProfil={() => router.push("/(admin)/profil-asesor")}
           />
         }
         ListFooterComponent={<ListFooter />}
@@ -316,16 +365,25 @@ export default function Index() {
             <View style={{ padding: 40, alignItems: "center" }}>
               <ActivityIndicator size="large" color="#52B79B" />
               <Text style={{ marginTop: 12, color: "#74787C", fontSize: 13 }}>
-                Memuat gerai kuliner nyata dari OpenStreetMap & TheMealDB...
+                Memuat daftar gerai kuliner dari database Supabase...
               </Text>
             </View>
           ) : errorMessage ? (
             <View style={{ padding: 30, alignItems: "center" }}>
               <Ionicons name="cloud-offline-outline" size={54} color="#ef4444" />
               <Text style={{ marginTop: 12, color: "#ef4444", fontWeight: "bold", fontSize: 16 }}>
-                Gagal Memuat API Eksternal
+                Gagal Memuat Data Supabase
               </Text>
-              <Text style={{ marginTop: 6, color: "#74787C", fontSize: 13, textAlign: "center", maxWidth: 360, lineHeight: 18 }}>
+              <Text
+                style={{
+                  marginTop: 6,
+                  color: "#74787C",
+                  fontSize: 13,
+                  textAlign: "center",
+                  maxWidth: 360,
+                  lineHeight: 18,
+                }}
+              >
                 {errorMessage}
               </Text>
               <Pressable
@@ -346,13 +404,13 @@ export default function Index() {
           ) : (
             <View style={{ padding: 30, alignItems: "center" }}>
               <Ionicons name="restaurant-outline" size={48} color="#9DA1A5" />
-              <Text style={{ marginTop: 12, color: "#74787C", fontSize: 14 }}>
+              <Text style={{ marginTop: 12, color: "#74787C", fontSize: 14, textAlign: "center" }}>
                 Tidak ada usaha kuliner yang cocok dengan filter pencarian.
               </Text>
             </View>
           )
         }
       />
-    </View>
+    </SafeAreaView>
   );
 }
