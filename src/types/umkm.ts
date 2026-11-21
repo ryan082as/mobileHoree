@@ -10,10 +10,10 @@ export type KategoriKuliner =
 export type StatusKelayakan = 'Sangat Layak' | 'Cukup Layak' | 'Perlu Pembinaan' | 'Risiko Tinggi';
 
 export interface SkorAspekKuliner {
-  higieneSanitasi: number;    // Standar kebersihan dapur & bahan pangan
-  keuanganHPP: number;        // Manajemen HPP, pembukuan kasir & laba
-  pemasaranDigital: number;   // Rating online food & branding
-  operasionalDapur: number;   // Kapasitas porsi & tenaga kerja
+  higieneSanitasi: number;
+  keuanganHPP: number;
+  pemasaranDigital: number;
+  operasionalDapur: number;
 }
 
 export interface MenuPopulerItem {
@@ -27,6 +27,8 @@ export interface MenuPopulerItem {
 
 export interface UMKMKulinerData {
   id: string;
+  userId?: string;
+  isSeed?: boolean;
   namaUsaha: string;
   namaPemilik: string;
   kategori: Exclude<KategoriKuliner, 'Semua'>;
@@ -36,20 +38,17 @@ export interface UMKMKulinerData {
   fotoLocal?: any;
   menuPopuler?: MenuPopulerItem[];
   
-  // Metrik Finansial & Operasional Kuliner
   omzetBulanan: number;
   labaBersih: number;
   kapasitasPorsiHarian: number;
   jumlahKaryawan: number;
   pencatatanKeuangan: string;
 
-  // Legalitas & Kesiapan Bisnis Kuliner
   sertifikatHalal: boolean;
   izinPIRT_BPOM: boolean;
   terdaftarOnlineFood: boolean;
   adopsiQRIS: boolean;
 
-  // Hasil Skor & Penilaian
   skorTotal: number;
   statusKelayakan: StatusKelayakan;
   skorAspek: SkorAspekKuliner;

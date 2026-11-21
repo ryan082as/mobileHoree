@@ -1,72 +1,144 @@
-import React from 'react';
-import { Stack } from 'expo-router';
+import React, { useEffect } from "react";
+import { Stack, useRouter, useSegments } from "expo-router";
+import { ActivityIndicator, Image, Text, View } from "react-native";
+import { AuthProvider, useAuth } from "@/context/AuthContext";
 
-export const unstable_settings = {
-  anchor: 'index',
-};
+function RootLayoutNav() {
+  const { session, isLoading } = useAuth();
+  const segments = useSegments();
+  const router = useRouter();
 
-// Kriteria Modul 2: Penerapan _layout.tsx dan <Stack.Screen> (Hal 30-31, 40, 43)
-export default function RootLayout() {
+  useEffect(() => {
+    if (isLoading) return;
+
+    const inAuthGroup = (segments[0] as string) === "(auth)";
+
+    if (!session && !inAuthGroup) {
+      router.replace("/(auth)/login" as any);
+    } else if (session && inAuthGroup) {
+      router.replace("/");
+    }
+  }, [session, isLoading, segments, router]);
+
+  if (isLoading) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "#1E6B56",
+          padding: 24,
+        }}
+      >
+        <View
+          style={{
+            backgroundColor: "#ffffff",
+            borderRadius: 16,
+            padding: 10,
+            marginBottom: 16,
+          }}
+        >
+          <Image
+            source={require("@/assets/images/petarasa-logo.png")}
+            style={{ width: 96, height: 76 }}
+            resizeMode="contain"
+          />
+        </View>
+        <ActivityIndicator size="large" color="#ffffff" />
+        <Text style={{ color: "#E2F4EE", fontSize: 13, marginTop: 12, fontWeight: "600" }}>
+          Memeriksa sesi autentikasi petaRasa...
+        </Text>
+      </View>
+    );
+  }
+
   return (
     <Stack
-      initialRouteName="index"
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#1E6B56', // Hijau toska gelap (sebelumnya #74787C abu-abu)
+          backgroundColor: "#1E6B56",
         },
-        headerTintColor: '#ffffff',
+        headerTintColor: "#ffffff",
         headerTitleStyle: {
-          fontWeight: 'bold',
+          fontWeight: "bold",
         },
         contentStyle: {
-          backgroundColor: '#F4F4F4', // Warna Mercury tema FlipPlay
+          backgroundColor: "#F4F4F4",
         },
       }}
     >
-      {/* 1. Halaman Utama / Dashboard (Header custom di dalam index) */}
+      <Stack.Screen
+        name="(auth)/login"
+        options={{
+          headerShown: false,
+          title: "Masuk petaRasa",
+        }}
+      />
+
       <Stack.Screen
         name="index"
         options={{
           headerShown: false,
-          title: 'petaRasa',
+          title: "petaRasa",
         }}
       />
 
-      {/* 2. Dynamic Route Halaman Detail UMKM ([id].tsx) */}
       <Stack.Screen
         name="umkm/[id]"
         options={{
           headerShown: false,
-          title: 'Detail Gerai Kuliner',
+          title: "Detail Gerai Kuliner",
         }}
       />
 
-      {/* 3. Catch-All Route: Dokumentasi & Regulasi SOP (docs/[...slug].tsx) */}
+      <Stack.Screen
+        name="(admin)/kelola"
+        options={{
+          headerShown: false,
+          title: "Kelola Gerai UMKM",
+        }}
+      />
+
+      <Stack.Screen
+        name="(admin)/profil-asesor"
+        options={{
+          headerShown: false,
+          title: "Profil Pengguna",
+        }}
+      />
+
+      <Stack.Screen
+        name="evaluasi/index"
+        options={{
+          headerShown: false,
+          title: "Tambah & Audit Gerai",
+        }}
+      />
+
       <Stack.Screen
         name="docs/[...slug]"
         options={{
-          title: 'Panduan Regulasi & SOP',
-          headerBackTitle: 'Beranda',
+          title: "Panduan Regulasi & SOP",
+          headerBackTitle: "Beranda",
         }}
       />
 
-      {/* 6. Normal Page: Halaman Profil Tim (about.tsx) */}
       <Stack.Screen
         name="about"
         options={{
-          title: 'Profil Tim Pengembang',
-          headerBackTitle: 'Beranda',
-        }}
-      />
-
-      {/* Fallback Deeplink Tidak Ditemukan (+not-found.tsx) */}
-      <Stack.Screen
-        name="+not-found"
-        options={{
-          title: 'Halaman Tidak Ditemukan',
-          headerBackTitle: 'Beranda',
+          title: "Profil Tim Pengembang",
+          headerBackTitle: "Beranda",
         }}
       />
     </Stack>
+  );
+}
+
+export default function RootLayout() {
+  return (
+    <AuthProvider>
+      <RootLayoutNav />
+    </AuthProvider>
   );
 }
