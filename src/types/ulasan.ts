@@ -10,9 +10,10 @@ export interface PesanThread {
 export interface UlasanKuliner {
   id: string;
   geraiId: string;
+  userId?: string;
   emailPengulas: string;
   namaPengulas: string;
-  ratingBintang: number; // Skala 1 s.d. 5
+  ratingBintang: number;
   isiUlasan: string;
   tanggalUlasan: string;
   threadBalasan: PesanThread[];

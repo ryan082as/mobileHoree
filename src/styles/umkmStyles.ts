@@ -12,11 +12,10 @@ export const styles = StyleSheet.create({
     width: "100%",
     alignSelf: "center",
   },
-  // Top App Bar
   headerContainer: {
-    backgroundColor: "#74787C",
+    backgroundColor: "#1E6B56",
     paddingTop: 16,
-    paddingBottom: 20,
+    paddingBottom: 16,
     paddingHorizontal: 16,
     borderRadius: 16,
     marginBottom: 16,
@@ -30,7 +29,22 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 8,
+  },
+  logoCard: {
+    backgroundColor: "#ffffff",
+    borderRadius: 12,
+    padding: 6,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 2,
+  },
+  logoImage: {
+    width: 92,
+    height: 76,
   },
   headerBadge: {
     backgroundColor: "#52B79B",
@@ -45,13 +59,16 @@ export const styles = StyleSheet.create({
   },
   authButtonsRow: {
     flexDirection: "row",
-    gap: 8,
+    flexWrap: "wrap",
+    justifyContent: "flex-end",
+    gap: 6,
+    maxWidth: 210,
   },
   authBtn: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "rgba(255, 255, 255, 0.18)",
-    paddingHorizontal: 10,
+    paddingHorizontal: 9,
     paddingVertical: 6,
     borderRadius: 8,
     borderWidth: 1,
@@ -62,6 +79,41 @@ export const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "600",
     marginLeft: 4,
+  },
+  userSessionBar: {
+    marginTop: 12,
+    paddingTop: 10,
+    borderTopWidth: 1,
+    borderTopColor: "rgba(255, 255, 255, 0.18)",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 8,
+  },
+  userSessionLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    flex: 1,
+  },
+  userSessionText: {
+    color: "#E2F4EE",
+    fontSize: 12,
+    fontWeight: "600",
+  },
+  addAuditBtn: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#52B79B",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 8,
+    gap: 4,
+  },
+  addAuditBtnText: {
+    color: "#ffffff",
+    fontSize: 11,
+    fontWeight: "bold",
   },
   headerTitle: {
     fontSize: 22,
@@ -75,7 +127,6 @@ export const styles = StyleSheet.create({
     marginTop: 2,
   },
 
-  // KPI Summary Cards
   statsContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -110,7 +161,6 @@ export const styles = StyleSheet.create({
     textAlign: "center",
   },
 
-  // Search & Filter Section
   searchWrapper: {
     flexDirection: "row",
     alignItems: "center",
@@ -151,7 +201,6 @@ export const styles = StyleSheet.create({
     color: "#ffffff",
   },
 
-  // Section Header
   sectionTitleRow: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -168,7 +217,6 @@ export const styles = StyleSheet.create({
     color: "#74787C",
   },
 
-  // UMKM Card Styling
   card: {
     backgroundColor: "#ffffff",
     borderRadius: 14,
@@ -244,7 +292,6 @@ export const styles = StyleSheet.create({
     marginLeft: 4,
   },
 
-  // Score Bar Row
   scoreRow: {
     backgroundColor: "#F4F4F4",
     padding: 10,
@@ -284,7 +331,6 @@ export const styles = StyleSheet.create({
     borderRadius: 3,
   },
 
-  // Info Metrics Grid
   metricsGrid: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -307,7 +353,6 @@ export const styles = StyleSheet.create({
     color: "#2C3033",
   },
 
-  // Compliance Pill List
   complianceRow: {
     flexDirection: "row",
     flexWrap: "wrap",
@@ -329,7 +374,6 @@ export const styles = StyleSheet.create({
     color: "#74787C",
   },
 
-  // Recommendation Box
   recommendationBox: {
     backgroundColor: "#EEF9F5",
     borderColor: "#C1EBDE",
@@ -344,7 +388,6 @@ export const styles = StyleSheet.create({
     lineHeight: 18,
   },
 
-  // Action Buttons inside Card
   cardActionRow: {
     flexDirection: "row",
     justifyContent: "flex-end",
@@ -365,7 +408,6 @@ export const styles = StyleSheet.create({
     marginRight: 4,
   },
 
-  // Simulation Panel
   simulationBox: {
     backgroundColor: "#ffffff",
     borderRadius: 14,
@@ -422,7 +464,6 @@ export const styles = StyleSheet.create({
     fontWeight: "600",
   },
 
-  // Footer Team Member Credits
   footerBox: {
     alignItems: "center",
     paddingVertical: 16,
