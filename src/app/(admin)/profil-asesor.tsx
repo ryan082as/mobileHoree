@@ -14,6 +14,7 @@ import { useFocusEffect, useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useAuth } from "@/context/AuthContext";
 import { getUMKMMilikUser } from "@/services/umkmService";
+import { TokenManager } from "@/services/tokenManager";
 import { UMKMKulinerData } from "@/types/umkm";
 import { styles } from "@/styles/profilStyles";
 
@@ -25,10 +26,15 @@ const BARCODE_PATTERN = [
 
 export default function ProfilAsesorScreen() {
   const router = useRouter();
-  const { user, signOut } = useAuth();
+  const { user, session, signOut } = useAuth();
   const [loggingOut, setLoggingOut] = useState(false);
   const [ownedStores, setOwnedStores] = useState<UMKMKulinerData[]>([]);
   const [showMemberTicket, setShowMemberTicket] = useState(false);
+
+  // State untuk demonstrasi Persistent Token Manager (expo-secure-store)
+  const [storedToken, setStoredToken] = useState<string | null>(null);
+  const [showFullToken, setShowFullToken] = useState(false);
+  const [tokenStatusMessage, setTokenStatusMessage] = useState<string>("");
 
   useFocusEffect(
     useCallback(() => {
@@ -36,8 +42,40 @@ export default function ProfilAsesorScreen() {
       getUMKMMilikUser(user.id)
         .then((stores) => setOwnedStores(stores))
         .catch(() => setOwnedStores([]));
+
+      // Ambil token tersimpan dari SecureStore
+      TokenManager.getToken().then((tok) => {
+        setStoredToken(tok);
+      });
     }, [user?.id])
   );
+
+  // 1. Simpan Token ke SecureStore
+  const handleSaveCurrentToken = async () => {
+    if (session?.access_token) {
+      await TokenManager.saveToken(session.access_token);
+      setStoredToken(session.access_token);
+      setTokenStatusMessage("Token JWT berhasil disimpan ke SecureStore.");
+    } else {
+      Alert.alert("Perhatian", "Tidak ada sesi aktif untuk menyimpan token.");
+    }
+  };
+
+  // 2. Ambil Token dari SecureStore
+  const handleFetchToken = async () => {
+    const token = await TokenManager.getToken();
+    setStoredToken(token);
+    setTokenStatusMessage(
+      token ? "Token JWT berhasil diambil dari SecureStore." : "SecureStore kosong."
+    );
+  };
+
+  // 3. Hapus Token dari SecureStore
+  const handleDeleteToken = async () => {
+    await TokenManager.deleteToken();
+    setStoredToken(null);
+    setTokenStatusMessage("Token JWT berhasil dihapus dari SecureStore.");
+  };
 
   const isStoreOwner = ownedStores.length > 0;
   const namaLengkap =
@@ -331,6 +369,140 @@ export default function ProfilAsesorScreen() {
                   <Ionicons name="log-out-outline" size={20} color="#DC2626" />
                 </View>
                 <Text style={[styles.serviceLabel, { color: "#DC2626" }]}>Keluar</Text>
+              </Pressable>
+            </View>
+          </View>
+
+          {/* Card: Manajemen Token JWT (Expo SecureStore) */}
+          <View style={styles.sectionCard}>
+            <View style={styles.sectionHeaderRow}>
+              <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
+                <Ionicons name="key" size={16} color="#489347" />
+                <Text style={styles.sectionTitle}>Token JWT (Expo SecureStore)</Text>
+              </View>
+              <View
+                style={{
+                  backgroundColor: storedToken ? "#E9F5E8" : "#FEE2E2",
+                  paddingHorizontal: 8,
+                  paddingVertical: 3,
+                  borderRadius: 8,
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 10,
+                    fontWeight: "700",
+                    color: storedToken ? "#2B702B" : "#DC2626",
+                  }}
+                >
+                  {storedToken ? "TERSIMPAN" : "KOSONG"}
+                </Text>
+              </View>
+            </View>
+
+            <Text style={{ fontSize: 11, color: "#667D66", marginBottom: 8, lineHeight: 16 }}>
+              Token autentikasi disimpan secara persisten di hardware-encrypted SecureStore perangkat.
+            </Text>
+
+            {/* Display token on screen */}
+            <View
+              style={{
+                backgroundColor: "#FAFCF9",
+                borderWidth: 1,
+                borderColor: "#D7E7D4",
+                borderRadius: 12,
+                padding: 10,
+                marginBottom: 10,
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: 4,
+                }}
+              >
+                <Text style={{ fontSize: 10, fontWeight: "700", color: "#489347" }}>
+                  NILAI TOKEN TERSIMPAN:
+                </Text>
+                {storedToken && (
+                  <Pressable onPress={() => setShowFullToken((prev) => !prev)}>
+                    <Text style={{ fontSize: 10, color: "#489347", fontWeight: "700" }}>
+                      {showFullToken ? "Sembunyikan" : "Tampilkan Semua"}
+                    </Text>
+                  </Pressable>
+                )}
+              </View>
+              <Text
+                style={{
+                  fontSize: 11,
+                  fontFamily: Platform.OS === "ios" ? "Menlo" : "monospace",
+                  color: storedToken ? "#1B331B" : "#94A894",
+                  lineHeight: 16,
+                }}
+                numberOfLines={showFullToken ? undefined : 2}
+                selectable
+              >
+                {storedToken || "Belum ada token JWT yang tersimpan di SecureStore."}
+              </Text>
+            </View>
+
+            {tokenStatusMessage ? (
+              <Text style={{ fontSize: 10, color: "#489347", marginBottom: 8, fontWeight: "600" }}>
+                ℹ️ {tokenStatusMessage}
+              </Text>
+            ) : null}
+
+            {/* Tombol aksi: Ambil, Simpan, Hapus */}
+            <View style={{ flexDirection: "row", gap: 6 }}>
+              <Pressable
+                style={{
+                  flex: 1,
+                  backgroundColor: "#489347",
+                  paddingVertical: 8,
+                  borderRadius: 10,
+                  alignItems: "center",
+                }}
+                onPress={handleFetchToken}
+              >
+                <Text style={{ color: "#FFFFFF", fontSize: 11, fontWeight: "700" }}>
+                  Ambil Token
+                </Text>
+              </Pressable>
+
+              <Pressable
+                style={{
+                  flex: 1,
+                  backgroundColor: "#EBF5EA",
+                  borderWidth: 1,
+                  borderColor: "#D3E9D0",
+                  paddingVertical: 8,
+                  borderRadius: 10,
+                  alignItems: "center",
+                }}
+                onPress={handleSaveCurrentToken}
+              >
+                <Text style={{ color: "#2C4C2C", fontSize: 11, fontWeight: "700" }}>
+                  Simpan Sesi
+                </Text>
+              </Pressable>
+
+              <Pressable
+                style={{
+                  flex: 1,
+                  backgroundColor: "#FEE2E2",
+                  borderWidth: 1,
+                  borderColor: "#FECACA",
+                  paddingVertical: 8,
+                  borderRadius: 10,
+                  alignItems: "center",
+                }}
+                onPress={handleDeleteToken}
+              >
+                <Text style={{ color: "#DC2626", fontSize: 11, fontWeight: "700" }}>
+                  Hapus Token
+                </Text>
               </Pressable>
             </View>
           </View>

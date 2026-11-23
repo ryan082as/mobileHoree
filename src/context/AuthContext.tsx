@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState, ReactNode } from
 import { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
 import { resetMigrationState } from "@/database/migration/seedData";
+import { TokenManager } from "@/services/tokenManager";
 
 interface AuthContextType {
   user: User | null;
@@ -26,10 +27,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     supabase.auth
       .getSession()
-      .then(({ data: { session: initialSession } }) => {
+      .then(async ({ data: { session: initialSession } }) => {
         if (!isMounted) return;
         setSession(initialSession);
         setUser(initialSession?.user ?? null);
+        if (initialSession?.access_token) {
+          await TokenManager.saveToken(initialSession.access_token);
+        }
         setIsLoading(false);
       })
       .catch(() => {
@@ -39,10 +43,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+    } = supabase.auth.onAuthStateChange(async (_event, nextSession) => {
       if (!isMounted) return;
       setSession(nextSession);
       setUser(nextSession?.user ?? null);
+      if (nextSession?.access_token) {
+        await TokenManager.saveToken(nextSession.access_token);
+      } else {
+        await TokenManager.deleteToken();
+      }
       setIsLoading(false);
     });
 
@@ -53,6 +62,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signOut = async () => {
+    await TokenManager.deleteToken();
     const { error } = await supabase.auth.signOut();
     if (error) {
       throw error;
