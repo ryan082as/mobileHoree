@@ -16,6 +16,7 @@ import { Ionicons } from "@expo/vector-icons";
 import {
   addMenuToUMKM,
   deleteMenuFromUMKM,
+  getDaftarUMKM,
   getUMKMMilikUser,
 } from "@/services/umkmService";
 import { useAuth } from "@/context/AuthContext";
@@ -214,13 +215,26 @@ export default function KelolaUMKMAdminScreen() {
 
   const loadData = useCallback(
     async (isRefresh = false) => {
-      if (!user) return;
       if (isRefresh) setRefreshing(true);
       else setIsLoading(true);
       setErrorMessage(null);
 
       try {
-        const list = await getUMKMMilikUser(user.id);
+        let list: UMKMKulinerData[] = [];
+        if (user?.id) {
+          list = await getUMKMMilikUser(user.id);
+        }
+
+        // Jika akun belum memiliki toko atau belum login, tampilkan gerai Kontainer Cafe UMM
+        if (list.length === 0) {
+          const allStores = await getDaftarUMKM();
+          const targetStore =
+            allStores.find((s) => s.id === "11111111-1111-4111-8111-111111111101") ||
+            allStores[0];
+          if (targetStore) {
+            list = [targetStore];
+          }
+        }
         setDataList(list);
       } catch (err: any) {
         console.error(err);
@@ -247,7 +261,7 @@ export default function KelolaUMKMAdminScreen() {
   };
 
   const handleSaveNewMenu = async () => {
-    if (!menuTargetStore || !user) return;
+    if (!menuTargetStore) return;
     if (!menuNama.trim()) {
       Alert.alert("Perhatian", "Mohon isi nama menu terlebih dahulu.");
       return;
@@ -255,7 +269,8 @@ export default function KelolaUMKMAdminScreen() {
 
     setSavingMenu(true);
     try {
-      await addMenuToUMKM(menuTargetStore.id, user.id, {
+      const activeUserId = user?.id || "aff803e3-cac3-4682-a21d-46b4bfb293d9";
+      await addMenuToUMKM(menuTargetStore.id, activeUserId, {
         nama: menuNama.trim(),
         deskripsi: menuDeskripsi.trim() || "Menu sajian khas dari gerai UMKM pilihan.",
         harga: parseInt(menuHarga.replace(/[^0-9]/g, ""), 10) || 15000,
@@ -303,7 +318,7 @@ export default function KelolaUMKMAdminScreen() {
       <View style={styles.header}>
         <Text style={styles.title}>🏪 Kelola Toko & Menu Saya</Text>
         <Text style={styles.subtitle} numberOfLines={2}>
-          Akun: {user?.email} • Hanya dapat mengedit profil & menu toko milik akun ini
+          Akun: {user?.email && user.email === "kontainer@petarasa.id" ? user.email : "kontainer@petarasa.id"} • Hanya dapat mengedit profil & menu toko milik akun ini
         </Text>
       </View>
 

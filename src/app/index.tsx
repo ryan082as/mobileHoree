@@ -78,9 +78,6 @@ function SearchHeader({
           <Pressable style={styles.topBarActionBtn} onPress={onOpenTeam}>
             <Ionicons name="information-circle-outline" size={18} color="#489347" />
           </Pressable>
-          <Pressable style={styles.topBarActionBtn} onPress={onOpenProfil}>
-            <Ionicons name="person-outline" size={18} color="#489347" />
-          </Pressable>
         </View>
       </View>
 
@@ -95,9 +92,6 @@ function SearchHeader({
             <Text style={styles.heroSubtitle}>
               Petunjuk Pasti Kuliner Pilihan & Higienis di Lingkungan Kampus
             </Text>
-            <Pressable style={styles.heroCtaBtn} onPress={onOpenSop}>
-              <Text style={styles.heroCtaText}>Pelajari SOP &gt;</Text>
-            </Pressable>
           </View>
 
           <View style={styles.heroLogoCard}>
@@ -122,18 +116,8 @@ function SearchHeader({
         </View>
       </View>
 
-      {/* 3. Quick Action Row (4 icons with circle backgrounds & orange HOT badge) */}
+      {/* 3. Quick Action Row */}
       <View style={styles.quickActionsRow}>
-        <Pressable style={styles.quickActionItem} onPress={onOpenSop}>
-          <View style={styles.hotBadge}>
-            <Text style={styles.hotBadgeText}>HOT</Text>
-          </View>
-          <View style={styles.quickActionIconWrapper}>
-            <Ionicons name="shield-checkmark" size={20} color="#489347" />
-          </View>
-          <Text style={styles.quickActionLabel}>Audit SOP</Text>
-        </Pressable>
-
         <Pressable
           style={styles.quickActionItem}
           onPress={() => onOpenSop()}
@@ -146,21 +130,22 @@ function SearchHeader({
 
         <Pressable
           style={styles.quickActionItem}
-          onPress={isStoreOwner ? onOpenKelola : onOpenProfil}
+          onPress={onOpenProfil}
+        >
+          <View style={styles.quickActionIconWrapper}>
+            <Ionicons name="person-outline" size={20} color="#489347" />
+          </View>
+          <Text style={styles.quickActionLabel}>Profil Asesor</Text>
+        </Pressable>
+
+        <Pressable
+          style={styles.quickActionItem}
+          onPress={onOpenKelola}
         >
           <View style={styles.quickActionIconWrapper}>
             <Ionicons name="storefront-outline" size={20} color="#489347" />
           </View>
-          <Text style={styles.quickActionLabel}>
-            {isStoreOwner ? "Kelola Toko" : "Daftar Toko"}
-          </Text>
-        </Pressable>
-
-        <Pressable style={styles.quickActionItem} onPress={onOpenProfil}>
-          <View style={styles.quickActionIconWrapper}>
-            <Ionicons name="qr-code-outline" size={20} color="#489347" />
-          </View>
-          <Text style={styles.quickActionLabel}>ID Member</Text>
+          <Text style={styles.quickActionLabel}>Daftar Toko</Text>
         </Pressable>
       </View>
 
