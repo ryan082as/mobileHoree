@@ -16,13 +16,13 @@ export default function EvaluasiMandiriScreen() {
     <SafeAreaView style={styles.container} edges={["top"]}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <Pressable style={styles.backRow} onPress={() => router.back()}>
-          <Ionicons name="arrow-back" size={20} color="#52B79B" />
+          <Ionicons name="arrow-back" size={20} color="#489347" />
           <Text style={styles.backText}>Kembali ke Dashboard</Text>
         </Pressable>
 
         <View style={styles.card}>
           <View style={{ alignItems: "center", marginBottom: 12 }}>
-            <Ionicons name="lock-closed" size={38} color="#1E6B56" />
+            <Ionicons name="lock-closed" size={38} color="#489347" />
           </View>
           <Text style={[styles.title, { textAlign: "center" }]}>
             Pendaftaran & Info Gerai Dikelola Admin

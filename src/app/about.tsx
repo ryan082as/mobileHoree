@@ -10,7 +10,7 @@ export default function AboutScreen() {
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <View style={styles.headerCard}>
-        <Ionicons name="restaurant" size={44} color="#52B79B" />
+        <Ionicons name="restaurant" size={44} color="#489347" />
         <Text style={styles.title}>petaRasa UMKM</Text>
         <Text style={styles.version}>Versi 2.0.0 — Modul 2 Praktikum Pemrograman Mobile</Text>
         <Text style={styles.desc}>

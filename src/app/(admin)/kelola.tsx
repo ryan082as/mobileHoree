@@ -71,7 +71,7 @@ function StoreManageCard({
         borderRadius: 12,
         marginBottom: 12,
         borderWidth: 1,
-        borderColor: "#E2E4E6",
+        borderColor: "#D7E7D4",
       }}
     >
       <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start" }}>
@@ -88,14 +88,14 @@ function StoreManageCard({
               gap: 4,
               marginTop: 6,
               alignSelf: "flex-start",
-              backgroundColor: "#EEF9F5",
+              backgroundColor: "#E9F5E8",
               paddingHorizontal: 8,
               paddingVertical: 3,
               borderRadius: 6,
             }}
           >
-            <Ionicons name="shield-checkmark-outline" size={11} color="#1E6B56" />
-            <Text style={{ fontSize: 10, color: "#1E6B56", fontWeight: "600" }}>
+            <Ionicons name="shield-checkmark-outline" size={11} color="#489347" />
+            <Text style={{ fontSize: 10, color: "#489347", fontWeight: "600" }}>
               Profil & Menu Terbuka • Nilai Audit Dikunci Admin
             </Text>
           </View>
@@ -106,8 +106,8 @@ function StoreManageCard({
           </Pressable>
           <Pressable
             style={{
-              backgroundColor: "#EEF9F5",
-              borderColor: "#C1EBDE",
+              backgroundColor: "#E9F5E8",
+              borderColor: "#C5E6C2",
               borderWidth: 1,
               paddingHorizontal: 10,
               paddingVertical: 8,
@@ -118,12 +118,12 @@ function StoreManageCard({
             }}
             onPress={onPressUlasan}
           >
-            <Ionicons name="chatbubble-ellipses-outline" size={14} color="#1E6B56" />
-            <Text style={{ color: "#1E6B56", fontSize: 11, fontWeight: "700" }}>Ulasan</Text>
+            <Ionicons name="chatbubble-ellipses-outline" size={14} color="#489347" />
+            <Text style={{ color: "#489347", fontSize: 11, fontWeight: "700" }}>Ulasan</Text>
           </Pressable>
           <Pressable
             style={{
-              backgroundColor: "#1E6B56",
+              backgroundColor: "#489347",
               paddingHorizontal: 10,
               paddingVertical: 8,
               borderRadius: 8,
@@ -144,10 +144,10 @@ function StoreManageCard({
           marginTop: 10,
           paddingTop: 10,
           borderTopWidth: 1,
-          borderTopColor: "#F0F0F0",
+          borderTopColor: "#EDF4EC",
         }}
       >
-        <Text style={{ fontSize: 12, fontWeight: "700", color: "#2C3033", marginBottom: 6 }}>
+        <Text style={{ fontSize: 12, fontWeight: "700", color: "#1B331B", marginBottom: 6 }}>
           Daftar Menu ({totalCount.toLocaleString("id-ID")})
         </Text>
 
@@ -163,7 +163,7 @@ function StoreManageCard({
         />
 
         {menuItems.length === 0 ? (
-          <Text style={{ fontSize: 11, color: "#9DA1A5" }}>
+          <Text style={{ fontSize: 11, color: "#94A894" }}>
             {loading
               ? "Memuat menu..."
               : searchQuery
@@ -296,7 +296,7 @@ export default function KelolaUMKMAdminScreen() {
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>
       <Pressable style={styles.backRow} onPress={() => router.back()}>
-        <Ionicons name="arrow-back" size={20} color="#52B79B" />
+        <Ionicons name="arrow-back" size={20} color="#489347" />
         <Text style={styles.backText}>Kembali ke Dashboard</Text>
       </Pressable>
 
@@ -309,7 +309,7 @@ export default function KelolaUMKMAdminScreen() {
 
       {isLoading ? (
         <View style={styles.loadingBox}>
-          <ActivityIndicator size="large" color="#52B79B" />
+          <ActivityIndicator size="large" color="#489347" />
           <Text style={styles.loadingText}>Memuat toko yang terhubung...</Text>
         </View>
       ) : errorMessage ? (
@@ -321,7 +321,7 @@ export default function KelolaUMKMAdminScreen() {
           <Text
             style={{
               marginTop: 6,
-              color: "#74787C",
+              color: "#667D66",
               fontSize: 13,
               textAlign: "center",
               maxWidth: 350,
@@ -333,7 +333,7 @@ export default function KelolaUMKMAdminScreen() {
           <Pressable
             style={{
               marginTop: 18,
-              backgroundColor: "#52B79B",
+              backgroundColor: "#489347",
               paddingHorizontal: 20,
               paddingVertical: 10,
               borderRadius: 8,
@@ -360,18 +360,18 @@ export default function KelolaUMKMAdminScreen() {
                 padding: 24,
                 alignItems: "center",
                 borderWidth: 1,
-                borderColor: "#E2E4E6",
+                borderColor: "#D7E7D4",
                 marginTop: 10,
               }}
             >
-              <Ionicons name="storefront-outline" size={42} color="#52B79B" />
-              <Text style={{ fontSize: 15, fontWeight: "bold", color: "#2C3033", marginTop: 10 }}>
+              <Ionicons name="storefront-outline" size={42} color="#489347" />
+              <Text style={{ fontSize: 15, fontWeight: "bold", color: "#1B331B", marginTop: 10 }}>
                 Belum Ada Toko Terhubung
               </Text>
               <Text
                 style={{
                   fontSize: 12,
-                  color: "#74787C",
+                  color: "#667D66",
                   textAlign: "center",
                   marginTop: 6,
                   lineHeight: 18,
@@ -383,13 +383,13 @@ export default function KelolaUMKMAdminScreen() {
               <View
                 style={{
                   marginTop: 12,
-                  backgroundColor: "#F4F4F4",
+                  backgroundColor: "#F3F7F2",
                   paddingHorizontal: 10,
                   paddingVertical: 6,
                   borderRadius: 8,
                 }}
               >
-                <Text style={{ fontSize: 10, color: "#53585C" }}>UID: {user?.id}</Text>
+                <Text style={{ fontSize: 10, color: "#4A6E4A" }}>UID: {user?.id}</Text>
               </View>
             </View>
           }
@@ -431,62 +431,62 @@ export default function KelolaUMKMAdminScreen() {
               alignSelf: "center",
             }}
           >
-            <Text style={{ fontSize: 17, fontWeight: "bold", color: "#2C3033", marginBottom: 4 }}>
+            <Text style={{ fontSize: 17, fontWeight: "bold", color: "#1B331B", marginBottom: 4 }}>
               Tambah Menu Baru
             </Text>
-            <Text style={{ fontSize: 12, color: "#74787C", marginBottom: 12 }}>
+            <Text style={{ fontSize: 12, color: "#667D66", marginBottom: 12 }}>
               Toko: {menuTargetStore?.namaUsaha}
             </Text>
 
-            <Text style={{ fontSize: 12, fontWeight: "600", color: "#53585C", marginBottom: 4 }}>
+            <Text style={{ fontSize: 12, fontWeight: "600", color: "#4A6E4A", marginBottom: 4 }}>
               Nama Menu
             </Text>
             <TextInput
               style={{
                 borderWidth: 1,
-                borderColor: "#E2E4E6",
+                borderColor: "#D7E7D4",
                 borderRadius: 8,
                 padding: 10,
                 marginBottom: 10,
-                color: "#2C3033",
+                color: "#1B331B",
               }}
               placeholder="Contoh: Es Kopi Susu Gula Aren"
-              placeholderTextColor="#9DA1A5"
+              placeholderTextColor="#94A894"
               value={menuNama}
               onChangeText={setMenuNama}
             />
 
-            <Text style={{ fontSize: 12, fontWeight: "600", color: "#53585C", marginBottom: 4 }}>
+            <Text style={{ fontSize: 12, fontWeight: "600", color: "#4A6E4A", marginBottom: 4 }}>
               Harga (Rp)
             </Text>
             <TextInput
               style={{
                 borderWidth: 1,
-                borderColor: "#E2E4E6",
+                borderColor: "#D7E7D4",
                 borderRadius: 8,
                 padding: 10,
                 marginBottom: 10,
-                color: "#2C3033",
+                color: "#1B331B",
               }}
               keyboardType="numeric"
               value={menuHarga}
               onChangeText={setMenuHarga}
             />
 
-            <Text style={{ fontSize: 12, fontWeight: "600", color: "#53585C", marginBottom: 4 }}>
+            <Text style={{ fontSize: 12, fontWeight: "600", color: "#4A6E4A", marginBottom: 4 }}>
               Deskripsi Menu
             </Text>
             <TextInput
               style={{
                 borderWidth: 1,
-                borderColor: "#E2E4E6",
+                borderColor: "#D7E7D4",
                 borderRadius: 8,
                 padding: 10,
                 marginBottom: 16,
-                color: "#2C3033",
+                color: "#1B331B",
               }}
               placeholder="Deskripsi singkat bahan/rasa menu..."
-              placeholderTextColor="#9DA1A5"
+              placeholderTextColor="#94A894"
               value={menuDeskripsi}
               onChangeText={setMenuDeskripsi}
             />
@@ -496,11 +496,11 @@ export default function KelolaUMKMAdminScreen() {
                 style={{ paddingHorizontal: 14, paddingVertical: 10 }}
                 onPress={() => setMenuTargetStore(null)}
               >
-                <Text style={{ color: "#74787C", fontWeight: "600" }}>Batal</Text>
+                <Text style={{ color: "#667D66", fontWeight: "600" }}>Batal</Text>
               </Pressable>
               <Pressable
                 style={{
-                  backgroundColor: "#1E6B56",
+                  backgroundColor: "#489347",
                   paddingHorizontal: 18,
                   paddingVertical: 10,
                   borderRadius: 8,

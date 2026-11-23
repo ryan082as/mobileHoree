@@ -132,6 +132,7 @@ export default function LoginScreen() {
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.cardWrapper}>
+            {/* Header with fresh green banner & logo */}
             <View style={styles.brandHeader}>
               <View style={styles.logoBox}>
                 <Image
@@ -153,6 +154,7 @@ export default function LoginScreen() {
               </Text>
             </View>
 
+            {/* Form Card */}
             <View style={styles.formCard}>
               {feedback && (
                 <View
@@ -164,7 +166,7 @@ export default function LoginScreen() {
                   <Ionicons
                     name={feedback.type === "error" ? "alert-circle" : "checkmark-circle"}
                     size={18}
-                    color={feedback.type === "error" ? "#B91C1C" : "#1E6B56"}
+                    color={feedback.type === "error" ? "#DC2626" : "#2D702C"}
                   />
                   <Text
                     style={[
@@ -181,11 +183,11 @@ export default function LoginScreen() {
                 <>
                   <Text style={styles.inputLabel}>Nama Lengkap</Text>
                   <View style={styles.inputWrapper}>
-                    <Ionicons name="person-outline" size={18} color="#74787C" />
+                    <Ionicons name="person-outline" size={18} color="#489347" />
                     <TextInput
                       style={styles.textInput}
                       placeholder="Contoh: Ahmad Farhan"
-                      placeholderTextColor="#9DA1A5"
+                      placeholderTextColor="#94A894"
                       value={namaLengkap}
                       onChangeText={setNamaLengkap}
                       autoCapitalize="words"
@@ -196,11 +198,11 @@ export default function LoginScreen() {
 
               <Text style={styles.inputLabel}>Alamat Email</Text>
               <View style={styles.inputWrapper}>
-                <Ionicons name="mail-outline" size={18} color="#74787C" />
+                <Ionicons name="mail-outline" size={18} color="#489347" />
                 <TextInput
                   style={styles.textInput}
                   placeholder="nama@email.com"
-                  placeholderTextColor="#9DA1A5"
+                  placeholderTextColor="#94A894"
                   value={email}
                   onChangeText={setEmail}
                   keyboardType="email-address"
@@ -211,11 +213,11 @@ export default function LoginScreen() {
 
               <Text style={styles.inputLabel}>Kata Sandi</Text>
               <View style={styles.inputWrapper}>
-                <Ionicons name="lock-closed-outline" size={18} color="#74787C" />
+                <Ionicons name="lock-closed-outline" size={18} color="#489347" />
                 <TextInput
                   style={styles.textInput}
                   placeholder="Minimal 6 karakter"
-                  placeholderTextColor="#9DA1A5"
+                  placeholderTextColor="#94A894"
                   value={password}
                   onChangeText={setPassword}
                   secureTextEntry={!showPassword}
@@ -226,7 +228,7 @@ export default function LoginScreen() {
                   <Ionicons
                     name={showPassword ? "eye-off-outline" : "eye-outline"}
                     size={18}
-                    color="#74787C"
+                    color="#667D66"
                   />
                 </Pressable>
               </View>
@@ -238,7 +240,7 @@ export default function LoginScreen() {
               >
                 {loading ? (
                   <View style={styles.submitBtnContent}>
-                    <ActivityIndicator size="small" color="#ffffff" />
+                    <ActivityIndicator size="small" color="#FFFFFF" />
                     <Text style={styles.submitBtnText}>Memproses...</Text>
                   </View>
                 ) : (
@@ -246,7 +248,7 @@ export default function LoginScreen() {
                     <Ionicons
                       name={isRegistering ? "person-add-outline" : "log-in-outline"}
                       size={18}
-                      color="#ffffff"
+                      color="#FFFFFF"
                     />
                     <Text style={styles.submitBtnText}>
                       {isRegistering ? "Daftar Akun Pengguna" : "Masuk ke petaRasa"}
@@ -270,20 +272,9 @@ export default function LoginScreen() {
                 </Text>
               </Pressable>
 
-              <View
-                style={{
-                  backgroundColor: "#EEF9F5",
-                  borderRadius: 10,
-                  borderWidth: 1,
-                  borderColor: "#C1EBDE",
-                  padding: 10,
-                  flexDirection: "row",
-                  alignItems: "flex-start",
-                  gap: 8,
-                }}
-              >
-                <Ionicons name="storefront-outline" size={16} color="#1E6B56" style={{ marginTop: 1 }} />
-                <Text style={{ flex: 1, fontSize: 11, color: "#1E6B56", lineHeight: 16 }}>
+              <View style={styles.noticeBox}>
+                <Ionicons name="storefront-outline" size={16} color="#489347" style={{ marginTop: 1 }} />
+                <Text style={styles.noticeText}>
                   <Text style={{ fontWeight: "bold" }}>Pemilik UMKM? </Text>
                   Hubungi Admin petaRasa untuk pembuatan akun yang terhubung dengan toko Anda di
                   database, lalu langsung masuk lewat form Login di atas.

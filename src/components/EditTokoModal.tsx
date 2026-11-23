@@ -103,10 +103,10 @@ export function EditTokoModal({ store, userId, onClose, onUpdated }: EditTokoMod
           }}
         >
           <ScrollView showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
-            <Text style={{ fontSize: 17, fontWeight: "bold", color: "#2C3033", marginBottom: 4 }}>
+            <Text style={{ fontSize: 17, fontWeight: "bold", color: "#1B331B", marginBottom: 4 }}>
               Edit Profil Toko Saya
             </Text>
-            <Text style={{ fontSize: 11, color: "#74787C", marginBottom: 12 }}>
+            <Text style={{ fontSize: 11, color: "#667D66", marginBottom: 12 }}>
               Perubahan hanya berlaku pada gerai milik akun Anda. Skor audit tetap dikunci Admin.
             </Text>
 
@@ -129,39 +129,39 @@ export function EditTokoModal({ store, userId, onClose, onUpdated }: EditTokoMod
               </View>
             )}
 
-            <Text style={{ fontSize: 12, fontWeight: "600", color: "#53585C", marginBottom: 4 }}>
+            <Text style={{ fontSize: 12, fontWeight: "600", color: "#4A6E4A", marginBottom: 4 }}>
               Nama Usaha
             </Text>
             <TextInput
               style={{
                 borderWidth: 1,
-                borderColor: "#E2E4E6",
+                borderColor: "#D7E7D4",
                 borderRadius: 8,
                 padding: 10,
                 marginBottom: 10,
-                color: "#2C3033",
+                color: "#1B331B",
               }}
               value={namaUsaha}
               onChangeText={setNamaUsaha}
             />
 
-            <Text style={{ fontSize: 12, fontWeight: "600", color: "#53585C", marginBottom: 4 }}>
+            <Text style={{ fontSize: 12, fontWeight: "600", color: "#4A6E4A", marginBottom: 4 }}>
               Nama Pemilik
             </Text>
             <TextInput
               style={{
                 borderWidth: 1,
-                borderColor: "#E2E4E6",
+                borderColor: "#D7E7D4",
                 borderRadius: 8,
                 padding: 10,
                 marginBottom: 10,
-                color: "#2C3033",
+                color: "#1B331B",
               }}
               value={namaPemilik}
               onChangeText={setNamaPemilik}
             />
 
-            <Text style={{ fontSize: 12, fontWeight: "600", color: "#53585C", marginBottom: 6 }}>
+            <Text style={{ fontSize: 12, fontWeight: "600", color: "#4A6E4A", marginBottom: 6 }}>
               Kategori Kuliner
             </Text>
             <ScrollView
@@ -181,15 +181,15 @@ export function EditTokoModal({ store, userId, onClose, onUpdated }: EditTokoMod
                         paddingVertical: 6,
                         borderRadius: 16,
                         borderWidth: 1,
-                        borderColor: selected ? "#1E6B56" : "#E2E4E6",
-                        backgroundColor: selected ? "#EEF9F5" : "#F9FAFB",
+                        borderColor: selected ? "#489347" : "#D7E7D4",
+                        backgroundColor: selected ? "#E9F5E8" : "#F9FAFB",
                       }}
                     >
                       <Text
                         style={{
                           fontSize: 11,
                           fontWeight: selected ? "700" : "500",
-                          color: selected ? "#1E6B56" : "#53585C",
+                          color: selected ? "#489347" : "#4A6E4A",
                         }}
                       >
                         {cat}
@@ -200,53 +200,53 @@ export function EditTokoModal({ store, userId, onClose, onUpdated }: EditTokoMod
               </View>
             </ScrollView>
 
-            <Text style={{ fontSize: 12, fontWeight: "600", color: "#53585C", marginBottom: 4 }}>
+            <Text style={{ fontSize: 12, fontWeight: "600", color: "#4A6E4A", marginBottom: 4 }}>
               Lokasi Toko
             </Text>
             <TextInput
               style={{
                 borderWidth: 1,
-                borderColor: "#E2E4E6",
+                borderColor: "#D7E7D4",
                 borderRadius: 8,
                 padding: 10,
                 marginBottom: 10,
-                color: "#2C3033",
+                color: "#1B331B",
               }}
               value={lokasiKota}
               onChangeText={setLokasiKota}
             />
 
-            <Text style={{ fontSize: 12, fontWeight: "600", color: "#53585C", marginBottom: 4 }}>
+            <Text style={{ fontSize: 12, fontWeight: "600", color: "#4A6E4A", marginBottom: 4 }}>
               Tahun Berdiri
             </Text>
             <TextInput
               style={{
                 borderWidth: 1,
-                borderColor: "#E2E4E6",
+                borderColor: "#D7E7D4",
                 borderRadius: 8,
                 padding: 10,
                 marginBottom: 10,
-                color: "#2C3033",
+                color: "#1B331B",
               }}
               keyboardType="numeric"
               value={tahunBerdiri}
               onChangeText={setTahunBerdiri}
             />
 
-            <Text style={{ fontSize: 12, fontWeight: "600", color: "#53585C", marginBottom: 4 }}>
+            <Text style={{ fontSize: 12, fontWeight: "600", color: "#4A6E4A", marginBottom: 4 }}>
               URL Foto Gerai (Opsional)
             </Text>
             <TextInput
               style={{
                 borderWidth: 1,
-                borderColor: "#E2E4E6",
+                borderColor: "#D7E7D4",
                 borderRadius: 8,
                 padding: 10,
                 marginBottom: 14,
-                color: "#2C3033",
+                color: "#1B331B",
               }}
               placeholder="Kosongkan untuk tetap memakai foto bawaan"
-              placeholderTextColor="#9DA1A5"
+              placeholderTextColor="#94A894"
               autoCapitalize="none"
               autoCorrect={false}
               value={fotoUrl}
@@ -255,11 +255,11 @@ export function EditTokoModal({ store, userId, onClose, onUpdated }: EditTokoMod
 
             <View style={{ flexDirection: "row", justifyContent: "flex-end", gap: 10 }}>
               <Pressable style={{ paddingHorizontal: 14, paddingVertical: 10 }} onPress={onClose}>
-                <Text style={{ color: "#74787C", fontWeight: "600" }}>Batal</Text>
+                <Text style={{ color: "#667D66", fontWeight: "600" }}>Batal</Text>
               </Pressable>
               <Pressable
                 style={{
-                  backgroundColor: "#1E6B56",
+                  backgroundColor: "#489347",
                   paddingHorizontal: 18,
                   paddingVertical: 10,
                   borderRadius: 8,

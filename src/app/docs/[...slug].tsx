@@ -19,7 +19,7 @@ export default function CatchAllDocsScreen() {
         style={styles.backRow}
         onPress={() => (router.canGoBack() ? router.back() : router.replace("/"))}
       >
-        <Ionicons name="arrow-back" size={20} color="#52B79B" />
+        <Ionicons name="arrow-back" size={20} color="#489347" />
         <Text style={styles.backText}>Kembali ke Beranda</Text>
       </Pressable>
 

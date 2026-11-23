@@ -1,73 +1,480 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F4F4F4",
-    padding: 20,
+    backgroundColor: "#489347", // Green header covers top of the screen
   },
-  backRow: {
+  scrollContent: {
+    flexGrow: 1,
+    paddingBottom: 60,
+  },
+
+  // Top Header Area (Lush Green)
+  headerArea: {
+    paddingHorizontal: 20,
+    paddingTop: 12,
+    paddingBottom: 20,
+    backgroundColor: "#489347",
+  },
+  headerTopNav: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 16,
+  },
+  headerBackBtn: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 20,
     gap: 6,
+    backgroundColor: "rgba(255, 255, 255, 0.2)",
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 20,
   },
-  backText: {
-    color: "#52B79B",
-    fontWeight: "600",
-    fontSize: 14,
+  headerBackText: {
+    color: "#FFFFFF",
+    fontSize: 12,
+    fontWeight: "700",
   },
-  card: {
-    backgroundColor: "#ffffff",
-    padding: 24,
-    borderRadius: 16,
+  headerIconsRight: {
+    flexDirection: "row",
     alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#E2E4E6",
+    gap: 10,
   },
-  avatar: {
-    width: 72,
-    height: 72,
-    borderRadius: 36,
-    backgroundColor: "#1E6B56",
+  headerIconBtn: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: "rgba(255, 255, 255, 0.2)",
     alignItems: "center",
     justifyContent: "center",
-    marginBottom: 12,
+    position: "relative",
   },
-  name: {
+  notifBadgeDot: {
+    position: "absolute",
+    top: 6,
+    right: 7,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: "#FF5252",
+    borderWidth: 1.5,
+    borderColor: "#489347",
+  },
+
+  // User Profile Info
+  userInfoRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 18,
+  },
+  avatarContainer: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    backgroundColor: "#FFFFFF",
+    borderWidth: 2,
+    borderColor: "rgba(255, 255, 255, 0.9)",
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 14,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  userName: {
+    fontSize: 19,
+    fontWeight: "bold",
+    color: "#FFFFFF",
+    marginBottom: 4,
+  },
+  userBadgeRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+  },
+  tierBadge: {
+    backgroundColor: "rgba(255, 255, 255, 0.25)",
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 10,
+  },
+  tierBadgeText: {
+    color: "#FFFFFF",
+    fontSize: 11,
+    fontWeight: "800",
+  },
+  roleBadgeText: {
+    color: "#E2F2E0",
+    fontSize: 11,
+    fontWeight: "600",
+  },
+
+  // Stats Row (399 Integral, 2 Coupons, 2.6 Wallet in reference)
+  statsRow: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    paddingVertical: 10,
+    marginBottom: 16,
+  },
+  statItem: {
+    alignItems: "center",
+    flex: 1,
+  },
+  statNumber: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#2C3033",
+    color: "#FFFFFF",
   },
-  role: {
-    fontSize: 13,
-    color: "#52B79B",
-    fontWeight: "600",
+  statLabel: {
+    fontSize: 11,
+    color: "#DCEFDB",
     marginTop: 2,
   },
-  email: {
+  statDivider: {
+    width: 1,
+    height: 22,
+    backgroundColor: "rgba(255, 255, 255, 0.25)",
+  },
+
+  // Silver Member Card (Dark forest green banner matching reference)
+  memberBannerCard: {
+    backgroundColor: "#2B5E2A",
+    borderRadius: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 4,
+  },
+  memberBannerLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+  memberBannerIcon: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: "rgba(255, 255, 255, 0.15)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  memberBannerTitle: {
+    color: "#FFFFFF",
+    fontSize: 14,
+    fontWeight: "bold",
+  },
+  memberBannerSub: {
+    color: "#A8DCA6",
+    fontSize: 11,
+    marginTop: 2,
+  },
+  memberBannerArrow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 2,
+  },
+  memberBannerCta: {
+    color: "#D4F0D2",
+    fontSize: 11,
+    fontWeight: "700",
+  },
+
+  // White Curved Bottom Sheet Container
+  sheetContainer: {
+    backgroundColor: "#F3F7F2",
+    borderTopLeftRadius: 26,
+    borderTopRightRadius: 26,
+    paddingHorizontal: 16,
+    paddingTop: 20,
+    paddingBottom: 30,
+    flex: 1,
+  },
+
+  // Sections inside White Sheet
+  sectionCard: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 18,
+    padding: 16,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: "#D7E7D4",
+    shadowColor: "#2B5B2A",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 5,
+    elevation: 2,
+  },
+  sectionHeaderRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 14,
+  },
+  sectionTitle: {
+    fontSize: 15,
+    fontWeight: "bold",
+    color: "#1B331B",
+  },
+  sectionLink: {
     fontSize: 12,
-    color: "#74787C",
-    marginTop: 4,
+    color: "#489347",
+    fontWeight: "600",
   },
-  divider: {
-    width: "100%",
-    height: 1,
-    backgroundColor: "#F0F0F0",
-    marginVertical: 20,
+
+  // Action Grid Row (4 icons in a row)
+  orderActionsRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
+  orderActionItem: {
+    alignItems: "center",
+    flex: 1,
+  },
+  orderActionIconBox: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: "#EBF5EA",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 6,
+    borderWidth: 1,
+    borderColor: "#D3E9D0",
+  },
+  orderActionLabel: {
+    fontSize: 11,
+    fontWeight: "600",
+    color: "#2C4C2C",
+    textAlign: "center",
+  },
+
+  // Service Grid (4 columns or 2x4 grid like "My service" in reference)
+  serviceGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    rowGap: 16,
+  },
+  serviceItem: {
+    width: "25%",
+    alignItems: "center",
+  },
+  serviceIconBox: {
+    width: 46,
+    height: 46,
+    borderRadius: 23,
+    backgroundColor: "#FFFFFF",
+    borderWidth: 1.5,
+    borderColor: "#CDE3CB",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 6,
+    shadowColor: "#2B5B2A",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  serviceLabel: {
+    fontSize: 10,
+    fontWeight: "600",
+    color: "#3E573E",
+    textAlign: "center",
+  },
+
+  // Store Connect Banner
+  storeConnectBox: {
+    backgroundColor: "#EAF5E9",
+    borderWidth: 1,
+    borderColor: "#C5E6C2",
+    borderRadius: 14,
+    padding: 14,
+    marginBottom: 16,
+  },
+  storeConnectTitle: {
+    fontSize: 13,
+    fontWeight: "bold",
+    color: "#1E541E",
+    marginBottom: 4,
+  },
+  storeConnectDesc: {
+    fontSize: 11,
+    color: "#3E663E",
+    lineHeight: 16,
+  },
+
+  // Logout Button
   logoutBtn: {
     flexDirection: "row",
-    backgroundColor: "#ef4444",
+    backgroundColor: "#FEE2E2",
+    borderWidth: 1,
+    borderColor: "#FECACA",
     paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 8,
+    paddingHorizontal: 20,
+    borderRadius: 14,
     alignItems: "center",
+    justifyContent: "center",
     gap: 8,
+    marginTop: 6,
   },
   logoutText: {
-    color: "#ffffff",
+    color: "#DC2626",
     fontWeight: "bold",
-    fontSize: 14,
+    fontSize: 13,
+  },
+
+  // Screen 3 Ticket / Barcode Modal Styles (matches right screen in reference)
+  ticketModalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(35, 75, 35, 0.92)",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  ticketCard: {
+    width: "100%",
+    maxWidth: 360,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 24,
+    paddingHorizontal: 20,
+    paddingTop: 44,
+    paddingBottom: 24,
+    alignItems: "center",
+    position: "relative",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.25,
+    shadowRadius: 16,
+    elevation: 8,
+  },
+  ticketAvatarFloat: {
+    position: "absolute",
+    top: -30,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: "#489347",
+    borderWidth: 3,
+    borderColor: "#FFFFFF",
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+  ticketTierPill: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#2B5E2A",
+    paddingHorizontal: 16,
+    paddingVertical: 6,
+    borderRadius: 20,
+    gap: 6,
+    marginBottom: 16,
+  },
+  ticketTierText: {
+    color: "#FFFFFF",
+    fontSize: 12,
+    fontWeight: "700",
+  },
+  ticketStatsRow: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: "100%",
+    marginBottom: 18,
+    paddingBottom: 14,
+    borderBottomWidth: 1,
+    borderBottomColor: "#EDF4EC",
+  },
+  ticketStatItem: {
+    alignItems: "center",
+  },
+  ticketStatNum: {
+    fontSize: 15,
+    fontWeight: "bold",
+    color: "#1B331B",
+  },
+  ticketStatLabel: {
+    fontSize: 10,
+    color: "#667D66",
+    marginTop: 2,
+  },
+
+  // Barcode Graphic
+  barcodeWrapper: {
+    width: "100%",
+    alignItems: "center",
+    paddingVertical: 12,
+    backgroundColor: "#FAFCF9",
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#E2EFE2",
+    marginBottom: 10,
+  },
+  barcodeLinesContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    height: 80,
+    gap: 3,
+    marginBottom: 8,
+  },
+  barcodeRefreshText: {
+    fontSize: 10,
+    color: "#8FA38F",
+    fontStyle: "italic",
+  },
+
+  ticketDivider: {
+    width: "100%",
+    borderBottomWidth: 1,
+    borderBottomColor: "#DCEADB",
+    borderStyle: "dashed",
+    marginVertical: 16,
+  },
+  ticketFooterTitle: {
+    fontSize: 11,
+    color: "#7E967E",
+    marginBottom: 10,
+  },
+  ticketPartnerBadges: {
+    flexDirection: "row",
+    gap: 12,
+  },
+  partnerPill: {
+    width: 44,
+    height: 30,
+    borderRadius: 15,
+    backgroundColor: "#F3F7F2",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#DCEADB",
+  },
+  ticketCloseBtn: {
+    marginTop: 18,
+    backgroundColor: "#489347",
+    paddingHorizontal: 24,
+    paddingVertical: 8,
+    borderRadius: 20,
+  },
+  ticketCloseText: {
+    color: "#FFFFFF",
+    fontSize: 12,
+    fontWeight: "bold",
   },
 });

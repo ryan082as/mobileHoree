@@ -39,23 +39,23 @@ export function MenuPaginationBar({
           alignItems: "center",
           backgroundColor: "#F8FAF9",
           borderWidth: 1,
-          borderColor: "#E2E4E6",
+          borderColor: "#D7E7D4",
           borderRadius: 8,
           paddingHorizontal: 10,
           marginBottom: 8,
         }}
       >
-        <Ionicons name="search" size={15} color="#74787C" />
+        <Ionicons name="search" size={15} color="#667D66" />
         <TextInput
           style={{
             flex: 1,
             paddingVertical: 7,
             paddingHorizontal: 8,
             fontSize: 12,
-            color: "#2C3033",
+            color: "#1B331B",
           }}
           placeholder="Cari nama menu (mis. #09999)..."
-          placeholderTextColor="#9DA1A5"
+          placeholderTextColor="#94A894"
           value={searchQuery}
           onChangeText={onChangeSearch}
           autoCorrect={false}
@@ -63,7 +63,7 @@ export function MenuPaginationBar({
         />
         {searchQuery.length > 0 && (
           <Pressable onPress={() => onChangeSearch("")}>
-            <Ionicons name="close-circle" size={16} color="#74787C" />
+            <Ionicons name="close-circle" size={16} color="#667D66" />
           </Pressable>
         )}
       </View>
@@ -84,8 +84,8 @@ export function MenuPaginationBar({
         }}
       >
         <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
-          {loading && <ActivityIndicator size="small" color="#1E6B56" />}
-          <Text style={{ fontSize: 11, color: "#53585C", fontWeight: "600" }}>
+          {loading && <ActivityIndicator size="small" color="#489347" />}
+          <Text style={{ fontSize: 11, color: "#4A6E4A", fontWeight: "600" }}>
             {startIdx.toLocaleString("id-ID")}–{endIdx.toLocaleString("id-ID")} dari{" "}
             {totalCount.toLocaleString("id-ID")} menu
           </Text>
@@ -99,11 +99,11 @@ export function MenuPaginationBar({
               paddingHorizontal: 6,
               paddingVertical: 4,
               borderRadius: 6,
-              backgroundColor: canPrev ? "#EEF9F5" : "#F1F5F9",
+              backgroundColor: canPrev ? "#E9F5E8" : "#F1F5F9",
               opacity: canPrev ? 1 : 0.45,
             }}
           >
-            <Ionicons name="play-skip-back" size={12} color="#1E6B56" />
+            <Ionicons name="play-skip-back" size={12} color="#489347" />
           </Pressable>
 
           <Pressable
@@ -113,14 +113,14 @@ export function MenuPaginationBar({
               paddingHorizontal: 8,
               paddingVertical: 4,
               borderRadius: 6,
-              backgroundColor: canPrev ? "#EEF9F5" : "#F1F5F9",
+              backgroundColor: canPrev ? "#E9F5E8" : "#F1F5F9",
               opacity: canPrev ? 1 : 0.45,
             }}
           >
-            <Text style={{ fontSize: 11, fontWeight: "700", color: "#1E6B56" }}>Prev</Text>
+            <Text style={{ fontSize: 11, fontWeight: "700", color: "#489347" }}>Prev</Text>
           </Pressable>
 
-          <Text style={{ fontSize: 11, color: "#2C3033", fontWeight: "700", paddingHorizontal: 4 }}>
+          <Text style={{ fontSize: 11, color: "#1B331B", fontWeight: "700", paddingHorizontal: 4 }}>
             {page + 1}/{totalPages}
           </Text>
 
@@ -131,11 +131,11 @@ export function MenuPaginationBar({
               paddingHorizontal: 8,
               paddingVertical: 4,
               borderRadius: 6,
-              backgroundColor: canNext ? "#EEF9F5" : "#F1F5F9",
+              backgroundColor: canNext ? "#E9F5E8" : "#F1F5F9",
               opacity: canNext ? 1 : 0.45,
             }}
           >
-            <Text style={{ fontSize: 11, fontWeight: "700", color: "#1E6B56" }}>Next</Text>
+            <Text style={{ fontSize: 11, fontWeight: "700", color: "#489347" }}>Next</Text>
           </Pressable>
 
           <Pressable
@@ -145,11 +145,11 @@ export function MenuPaginationBar({
               paddingHorizontal: 6,
               paddingVertical: 4,
               borderRadius: 6,
-              backgroundColor: canNext ? "#EEF9F5" : "#F1F5F9",
+              backgroundColor: canNext ? "#E9F5E8" : "#F1F5F9",
               opacity: canNext ? 1 : 0.45,
             }}
           >
-            <Ionicons name="play-skip-forward" size={12} color="#1E6B56" />
+            <Ionicons name="play-skip-forward" size={12} color="#489347" />
           </Pressable>
         </View>
       </View>
